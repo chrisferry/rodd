@@ -16,7 +16,7 @@ ReactiveOps DataDog tooling
 ### Monitors
 We create a template with all the monitors we want to use. You can see the current monitors(yaml files) under [monitors](/monitors/). Later on, we talk about how to create our own monitors.
 
-Have a look at [rodd-example.yml](/pentagon_datadog/files/datadog/rodd-example.yml) here we define(under definitions) variables we want to use such as `cluster`. Then under `monitors` we call out the monitors we want to use. Finally, when ready run:
+Have a look at [rodd-example.yml](/pentagon_datadog/files/datadog/rodd-example.yaml) here we define(under definitions) variables we want to use such as `cluster`. Then under `monitors` we call out the monitors we want to use. Finally, when ready run:
 
 `pentagon add datadog.monitors -f rodd-example.yml`
 
