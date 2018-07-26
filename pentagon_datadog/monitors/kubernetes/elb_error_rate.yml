@@ -1,0 +1,27 @@
+notify_audit: false
+locked: false
+name: '[${environment}] API Application ELB returning high number of 5xx errors'
+tags: ['${environment}', reactiveops]
+include_tags: false
+no_data_timeframe: null
+silenced: {}
+require_full_window: true
+new_host_delay: 300
+notify_no_data: false
+renotify_interval: 0
+escalation_message: ''
+query: min(last_1h):sum:aws.elb.httpcode_backend_5xx{*}.as_rate() >= 2
+message: |
+  {{#is_alert}}
+  The ELB is returning a higher than normal number of 5xx
+  errors
+  - Is AWS having another WAF outage
+  - Are healthy hosts available behind ALB (target group)
+  {{/is_alert}}
+  {{^is_alert}}
+  The ELB is no longer returning 5xx errors
+  {{/is_alert}}
+  ${notifications}
+type: query alert
+thresholds: {critical: 2}
+timeout_h: 0
