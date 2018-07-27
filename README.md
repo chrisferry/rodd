@@ -1,5 +1,5 @@
 # rodd
-ReactiveOps DataDog tooling
+ReactiveOps best practices and sane defaults for dashboards and monitoring of Kubernetes infrastructure with Datadog. 
 
 ## Requirements
 - python >= 2.7
