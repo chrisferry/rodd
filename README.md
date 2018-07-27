@@ -10,7 +10,7 @@ ReactiveOps DataDog tooling
 ## Installation
 `rodd` is a [Pentagon component](https://github.com/reactiveops/pentagon/blob/master/docs/components.md) so you'll need to have Pentagon installed.
 
-`rodd` is based on terraform, so plan to create your rodd monitors in an appropriate directory. Enter that terraform directory and initialize by running: `pentagon add datadog -o$(pwd)`. This will create `datadog.tf` and the directory `datadog` that will contain an `rodd-example.yml` to get you up and running. `datadog.tf` will define the provider and module to be included in your terraform directory. The `datadog` directory will contain the terraform files that define monitors and dashboards. 
+`rodd` is based on terraform, so plan to create your rodd monitors in an appropriate directory. Enter that terraform directory and initialize by running: `pentagon add datadog -o$(pwd)`. This will create `datadog.tf` and the directory `datadog` that will contain an `rodd-example.yml` to get you up and running. `datadog.tf` will define the provider and module to be included in your terraform directory. The `datadog` directory will contain the terraform files that define monitors and dashboards.
 
 ## Usage
 ### Monitors
@@ -20,10 +20,10 @@ Have a look at [rodd-example.yml](/pentagon_datadog/files/datadog/rodd-example.y
 
 `pentagon add datadog.monitors -f rodd-example.yml`
 
-Which creates a terraform module for each monitor. 
+Which creates a terraform module for each monitor.
 
 #### Native Monitors and Monitor Families
-There are several monitor included in this module and those are broken up into families. `kubernetes`, `rds` etc. See below for a comprehensive list. If you wish to deploy all monitors in a family, you can simply call out the family name in the yaml file. The following snippet will create a terraform file for each of the monitors in the `kubernetes` family. 
+There are several monitor included in this module and those are broken up into families. `kubernetes`, `rds` etc. See below for a comprehensive list. If you wish to deploy all monitors in a family, you can simply call out the family name in the yaml file. The following snippet will create a terraform file for each of the monitors in the `kubernetes` family.
 ```
 monitors:
   - source: kubernetes
@@ -39,7 +39,7 @@ monitors:
     timeout_h: 3
 ```
 #### Custom Monitors
-If the monitor you want doesn't exist as a native monitor in a monitor family. You can define any monitor you want inline in the yaml file. This will create 
+If the monitor you want doesn't exist as a native monitor in a monitor family. You can define any monitor you want inline in the yaml file. This will create
 ```
 definitions:
   environment: "production"
@@ -70,7 +70,7 @@ monitors:
 ```
 
 #### Monitor Definitions
-Alluded to above, in each monitor there are certain fields that need to be defined; `environment`, `cluster` are two examples. 
+Alluded to above, in each monitor there are certain fields that need to be defined; `environment`, `cluster` are two examples.
 They are denoted by `${<name>}` in the template and are referred to as "definitions". You can define definitions at a global level
 ```
 definitions:
@@ -86,7 +86,7 @@ definitions:
   environment: production
 monitors:
   - source: kubernetes
-    definitions: 
+    definitions:
       environment: staging # this will override the global value
 ```
 
@@ -143,4 +143,3 @@ You can export monitors from datadog and using `convert.py` create your own moni
 - https://github.com/reactiveops/pentagon
 - https://github.com/reactiveops/pentagon/blob/master/docs/components.md
 - https://docs.datadoghq.com/monitors/
-- 
