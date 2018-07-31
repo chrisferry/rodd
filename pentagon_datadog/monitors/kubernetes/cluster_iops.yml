@@ -10,12 +10,12 @@ require_full_window: true
 notify_no_data: false
 renotify_interval: 0
 escalation_message: ''
-query: avg(last_1h):avg:aws.ebs.volume_read_ops{kubernetescluster:${cluster}} by {host} + avg:aws.ebs.volume_write_ops{kubernetescluster:${cluster}} by {host} > 20000
+query: avg(last_1h):avg:aws.ebs.volume_read_ops{kubernetescluster:${cluster}} by {host} + avg:aws.ebs.volume_write_ops{kubernetescluster:${cluster}} by {host} > 3400
 message: |
   {{#is_alert}}
   {{host.name}} has as increasing number of disk operations
   {{/is_alert}}
   ${notifications}
 type: query alert
-thresholds: {critical: 20000, warning: 15000}
+thresholds: {critical: 3400, warning: 3200}
 timeout_h: 0
