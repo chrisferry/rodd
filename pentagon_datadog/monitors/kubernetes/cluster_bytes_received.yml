@@ -17,5 +17,5 @@ message: |
   {{/is_alert_recovery}}
   ${notifications}
 type: metric alert
-thresholds: {critical: 20000, warning: 15000}
+thresholds: {critical: 20000000, warning: 17500000}
 timeout_h: 0
