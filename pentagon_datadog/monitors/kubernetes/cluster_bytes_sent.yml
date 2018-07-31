@@ -10,7 +10,7 @@ require_full_window: true
 notify_no_data: false
 renotify_interval: 0
 escalation_message: ''
-query: avg(last_15m):avg:kubernetes.network.tx_bytes{kubernetescluster:${cluster}} by {host} > 20000
+query: avg(last_15m):avg:kubernetes.network.tx_bytes{kubernetescluster:${cluster}} by {host} > 20000000
 message: |
   {{#is_alert_recovery}}
   Increase in network bytes out
