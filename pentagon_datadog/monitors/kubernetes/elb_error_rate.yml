@@ -10,7 +10,7 @@ new_host_delay: 300
 notify_no_data: false
 renotify_interval: 0
 escalation_message: ''
-query: "min(last_15m):100 * avg:aws.elb.httpcode_backend_5xx{kubernetescluster:${cluster}} by {loadbalancername}.as_rate().fill(zero) / avg:aws.elb.request_count{kubernetescluster:${cluster}} by {loadbalancername}.as_rate().fill(zero) >= 2"
+query: "sum(last_1m):100 * sum:aws.elb.httpcode_backend_5xx{kubernetescluster:${cluster}} by {loadbalancername}.as_count().rollup(sum, 900) / sum:aws.elb.request_count{kubernetescluster:${cluster}} by {loadbalancername}.as_count().rollup(sum, 900) >= 2"
 message: |
   {{#is_alert}}
   The {{kubernetes.io/service-name}} ELB is reporting the Kubernetes Service is returning more 5xx errors than normal
