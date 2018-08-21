@@ -17,12 +17,12 @@ resource "datadog_monitor" "{{ resource_name }}" {
   # Required Arguments
   name               = "{{ name }}"
   type               = "{{ type }}"
-  
+
   message            = <<EOF
   {{ message }}
   EOF
   query = "{{ query | trim }}"
-  
+
   # Optional Arguments
   {%- if escalation_message %}
   escalation_message = <<EOF
@@ -73,7 +73,9 @@ resource "datadog_monitor" "{{ resource_name }}" {
   tags = {{ tags | tojson }}
   {%- endif %}
   {%- if silenced %}
-  silenced = {{ silenced|lower }}
+  silenced = {
+    "*" = 0
+  }
   {%- else %}
   silenced = {}
   {%- endif %}
