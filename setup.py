@@ -34,14 +34,16 @@ setup(name='pentagon_datadog',
       license='Apache2.0',
       include_package_data=True,
       install_requires=[
-          'oyaml>=0.4'
+          'oyaml>=0.4',
+          'Jinja2'
           ],
       data_files=[],
       package_data={
         "pentagon_datadog": [
           'files/*',
-          'monitors/kubernetes/*',
           'monitors/elasticsearch/*',
+          'monitors/kubernetes/*',
+          'monitors/logging/*',
           'monitors/node/*',
           'monitors/rds/*',
           'dashboards/kubernetes/*'

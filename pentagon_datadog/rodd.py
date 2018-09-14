@@ -15,15 +15,12 @@
 
 import os
 import logging
-import shutil
 import traceback
 import glob
 import re
-import sys
 import oyaml as yaml
-
-from pentagon.component import ComponentBase
-from jinja2 import Environment
+import collections
+import jinja2
 
 from pentagon.component import ComponentBase
 from pentagon.helpers import render_template, merge_dict
@@ -121,28 +118,22 @@ class Rodd(ComponentBase):
         """ Replace ${definitions} with their value """
 
         logging.debug("Definitions: {}".format(self.definitions))
-        for key in data.keys():
 
-            # Just handle the tags separately since they are a list.  Probably a
-            # better way to do this in the future
+        if isinstance(data, (list,)):
+            for index, item in enumerate(data):
+                data[index] = self._replace_definitions(data[index])
 
-            if key == 'tags':
-                logging.debug("Found tags: {}".format(data[key]))
-                for index, item in enumerate(data[key]):
-                    for var, value in self.definitions.iteritems():
-                        data[key][index] = data[key][index].replace("${%s}" % str(var), value)
+        if isinstance(data, collections.Mapping):
+            for key in data.keys():
+                data[key] = self._replace_definitions(data[key])
 
-            if type(data[key]) == str or type(data) == unicode:
-                for var, value in self.definitions.iteritems():
-                    logging.debug("Replacing Definition: {}:{}".format(var, value))
-                    data[key] = data[key].replace("${%s}" % str(var), value)
+        if type(data) == str or type(data) == unicode:
+            for var, value in self.definitions.iteritems():
+                logging.debug("Replacing Definition: {}:{}".format(var, value))
+                data = data.replace("${%s}" % str(var), value)
+                if data.startswith('Jinja:'):
+                    data = jinja2.Template(data[6:]).render(**self.definitions)
         return data
-
-    @property
-    def global_definitions(self):
-
-        logging.debug(self._data.get('definitions', {}))
-        return self._data.get('definitions', {})
 
     @property
     def global_definitions(self):
@@ -152,5 +143,5 @@ class Rodd(ComponentBase):
     def exceptions(self):
         exception_paths = []
         for e in self._exceptions:
-            exception_paths.append("{}.yml".format(e.replace('.','/')))
+            exception_paths.append("{}.yml".format(e.replace('.', '/')))
         return exception_paths

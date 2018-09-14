@@ -1,0 +1,26 @@
+notify_audit: false
+locked: false
+name: 'Log rate is high'
+tags: [reactiveops]
+include_tags: false
+no_data_timeframe: null
+silenced: {}
+new_host_delay: 300
+require_full_window: true
+notify_no_data: false
+renotify_interval: 0
+escalation_message: ''
+query: Jinja:logs("*").index("main").rollup("count").last("1d") > {{(monthly_log_max | int) // 31}}
+message: |
+  {{#is_alert}}
+  Logging rates over the last day have been very high. At this rate, the total logs for this month might exceed the plan for ${monthly_log_max}
+  {{/is_alert}}
+  {{^is_alert}}
+  The logging rate has returned to normal
+  {{/is_alert}}
+  ${notifications}
+type: log alert
+thresholds:
+  critical: Jinja:{{(monthly_log_max | int) // 31}}
+  warning: Jinja:{{(monthly_log_max | int) * 9 // 310}}
+timeout_h: 0
