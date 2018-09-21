@@ -17,5 +17,5 @@ message: |
   {{/is_alert}}
   ${notifications}
 type: query alert
-thresholds: {critical: 3400, warning: 3200}
+thresholds: {critical: 900000, warning: 800000}
 timeout_h: 0
