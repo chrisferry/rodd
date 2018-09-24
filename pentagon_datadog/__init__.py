@@ -20,7 +20,6 @@ from monitor import Monitor, Monitors
 from dashboard import Dashboard, Dashboards
 
 
-
 class Datadog(ComponentBase):
     _environment = [{'aws_region': 'AWS_DEFAULT_REGION'}, 'infrastructure_bucket']
     _defaults = {'backend': 'datadog/tf.state'}
