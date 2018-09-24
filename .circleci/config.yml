@@ -30,37 +30,37 @@ jobs:
           command: |
             sudo pip install -r test/requirements.txt
             nosetests
-release:
-    docker:
-      - image: circleci/python:2
-    environment:
-      PYPI_USERNAME: ReactiveOps
-      GITHUB_ORGANIZATION: $CIRCLE_PROJECT_USERNAME
-      GITHUB_REPOSITORY: $CIRCLE_PROJECT_REPONAME
-    steps:
-      - checkout
-      - run:
-          name: init .pypirc
-          command: |
-            echo -e "[pypi]" >> ~/.pypirc
-            echo -e "username = $PYPI_USERNAME" >> ~/.pypirc
-            echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
-      - run:
-          name: create release
-          command: |
-            git fetch --tags
-            curl -O https://raw.githubusercontent.com/reactiveops/release.sh/v0.0.2/release
-            /bin/bash release
-      - run:
-          name: package and upload
-          command: |
-            sudo pip install twine
-            python setup.py sdist bdist_wheel
-            twine upload dist/*
+  release:
+      docker:
+        - image: circleci/python:2
+      environment:
+        PYPI_USERNAME: ReactiveOps
+        GITHUB_ORGANIZATION: $CIRCLE_PROJECT_USERNAME
+        GITHUB_REPOSITORY: $CIRCLE_PROJECT_REPONAME
+      steps:
+        - checkout
+        - run:
+            name: init .pypirc
+            command: |
+              echo -e "[pypi]" >> ~/.pypirc
+              echo -e "username = $PYPI_USERNAME" >> ~/.pypirc
+              echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
+        - run:
+            name: create release
+            command: |
+              git fetch --tags
+              curl -O https://raw.githubusercontent.com/reactiveops/release.sh/v0.0.2/release
+              /bin/bash release
+        - run:
+            name: package and upload
+            command: |
+              sudo pip install twine
+              python setup.py sdist bdist_wheel
+              twine upload dist/*
 
 workflows:
   version: 2
-  build:
+  build_and_release:
     jobs:
       - build:
           filters:
