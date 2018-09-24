@@ -34,7 +34,8 @@ setup(name='pentagon_datadog',
       license='Apache2.0',
       include_package_data=True,
       install_requires=[
-          'oyaml>=0.4'
+          'oyaml>=0.4',
+          'pentagon>=2.4.1'
           ],
       data_files=[],
       package_data={
