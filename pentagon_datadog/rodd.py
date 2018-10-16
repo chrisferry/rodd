@@ -15,17 +15,13 @@
 
 import os
 import logging
-import shutil
 import traceback
 import glob
 import re
-import sys
 import oyaml as yaml
 
 from pentagon.component import ComponentBase
-from jinja2 import Environment
 
-from pentagon.component import ComponentBase
 from pentagon.helpers import render_template, merge_dict
 
 
@@ -73,19 +69,22 @@ class Rodd(ComponentBase):
                 data = {}
                 logging.debug("Loading {}".format(local_source_path))
                 logging.debug("Source is: {} ".format(source))
-                if os.path.isfile(local_source_path) and ('/').join(local_source_path.split('/')[-2:]) not in self.exceptions:
-                    with open(local_source_path, 'r') as item_file:
-                        item_dict = yaml.load(item_file)
-                    # If the items are being pulled from a family,
-                    # then use all the values in the default item
-                    if len(item_local_paths) > 1:
-                        data = item_dict
-                    else:
-                        # Otherwise, overwrite the item values with
-                        # the values being passed in
-                        data = merge_dict(self._data, item_dict)
 
-                    logging.debug('Final context: {}'.format(data))
+                if os.path.isfile(local_source_path) and ('/').join(local_source_path.split('/')[-2:]) in self.exceptions:
+                    continue
+
+                with open(local_source_path, 'r') as item_file:
+                    item_dict = yaml.load(item_file)
+                # If the items are being pulled from a family,
+                # then use all the values in the default item
+                if len(item_local_paths) > 1:
+                    data = item_dict
+                else:
+                    # Otherwise, overwrite the item values with
+                    # the values being passed in
+                    data = merge_dict(self._data, item_dict)
+
+                logging.debug('Final context: {}'.format(data))
 
                 try:
                     # transform item name
@@ -140,17 +139,11 @@ class Rodd(ComponentBase):
 
     @property
     def global_definitions(self):
-
-        logging.debug(self._data.get('definitions', {}))
-        return self._data.get('definitions', {})
-
-    @property
-    def global_definitions(self):
         return self._global_definitions
 
     @property
     def exceptions(self):
         exception_paths = []
         for e in self._exceptions:
-            exception_paths.append("{}.yml".format(e.replace('.','/')))
+            exception_paths.append("{}.yml".format(e.replace('.', '/')))
         return exception_paths
