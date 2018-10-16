@@ -15,17 +15,13 @@
 
 import os
 import logging
-import shutil
 import traceback
 import glob
 import re
-import sys
 import oyaml as yaml
 
 from pentagon.component import ComponentBase
-from jinja2 import Environment
 
-from pentagon.component import ComponentBase
 from pentagon.helpers import render_template, merge_dict
 
 
@@ -61,56 +57,58 @@ class Rodd(ComponentBase):
         self._overwrite = overwrite
 
         source = self._data.get('source')
-        if source is not None:
-            item_local_paths = []
-            if "." in source:
-                item_local_paths = ["{}/{}/{}.yml".format(self._path, self._item_type, ("/").join(source.split(".")))]
+        if source is None:
+            return
+
+        item_local_paths = []
+        if "." in source:
+            item_local_paths = ["{}/{}/{}.yml".format(self._path, self._item_type, ("/").join(source.split(".")))]
+        else:
+            item_local_paths = glob.glob("{}/{}/{}/*.yml".format(self._path, self._item_type, source))
+        logging.debug("{}: {}".format(self._item_type.title(), item_local_paths))
+
+        for local_source_path in item_local_paths:
+            data = {}
+            logging.debug("Loading {}".format(local_source_path))
+            logging.debug("Source is: {} ".format(source))
+
+            if os.path.isfile(local_source_path) and ('/').join(local_source_path.split('/')[-2:]) in self.exceptions:
+                continue
+
+            with open(local_source_path, 'r') as item_file:
+                item_dict = yaml.load(item_file)
+            # If the items are being pulled from a family,
+            # then use all the values in the default item
+            if len(item_local_paths) > 1:
+                data = item_dict
             else:
-                item_local_paths = glob.glob("{}/{}/{}/*.yml".format(self._path, self._item_type, source))
-            logging.debug("{}: {}".format(self._item_type.title(), item_local_paths))
+                # Otherwise, overwrite the item values with
+                # the values being passed in
+                data = merge_dict(self._data, item_dict)
 
-            for local_source_path in item_local_paths:
-                data = {}
-                logging.debug("Loading {}".format(local_source_path))
-                logging.debug("Source is: {} ".format(source))
-                if os.path.isfile(local_source_path) and ('/').join(local_source_path.split('/')[-2:]) not in self.exceptions:
-                    with open(local_source_path, 'r') as item_file:
-                        item_dict = yaml.load(item_file)
-                    # If the items are being pulled from a family,
-                    # then use all the values in the default item
-                    if len(item_local_paths) > 1:
-                        data = item_dict
-                    else:
-                        # Otherwise, overwrite the item values with
-                        # the values being passed in
-                        data = merge_dict(self._data, item_dict)
+            logging.debug('Final context: {}'.format(data))
 
-                    logging.debug('Final context: {}'.format(data))
+            try:
+                # transform item name
+                data = self._replace_definitions(data)
 
-                try:
-                    # transform item name
-                    data = self._replace_definitions(data)
+                raw_resource_name = data.get('name', data.get('title', 'Unknown Title'))
 
-                    try:
-                        raw_resource_name = data['name']
-                    except KeyError:
-                        raw_resource_name = data['title']
+                data['resource_name'] = re.sub('^_', '', re.sub('[^0-9a-zA-Z]+', '_', raw_resource_name.lower())).strip('_')
 
-                    data['resource_name'] = re.sub('^_', '', re.sub('[^0-9a-zA-Z]+', '_', raw_resource_name.lower())).strip('_')
+                logging.debug("New Name: {}".format(data['resource_name']))
 
-                    logging.debug("New Name: {}".format(data['resource_name']))
+                self._flatten_options()
+                for key in data:
+                    if type(data[key]) in [unicode, str]:
+                        data[key] = data[key].replace('"', '\\"')
+                self._remove_init_file()
+                self._render_directory_templates(data)
 
-                    self._flatten_options()
-                    for key in data:
-                        if type(data[key]) in [unicode, str]:
-                            data[key] = data[key].replace('"', '\\"')
-                    self._remove_init_file()
-                    self._render_directory_templates(data)
-
-                except Exception as e:
-                    logging.error("Error occured configuring component")
-                    logging.error(e)
-                    logging.debug(traceback.format_exc(e))
+            except Exception as e:
+                logging.error("Error occured configuring component")
+                logging.error(e)
+                logging.debug(traceback.format_exc(e))
 
     @property
     def definitions(self):
@@ -140,17 +138,11 @@ class Rodd(ComponentBase):
 
     @property
     def global_definitions(self):
-
-        logging.debug(self._data.get('definitions', {}))
-        return self._data.get('definitions', {})
-
-    @property
-    def global_definitions(self):
         return self._global_definitions
 
     @property
     def exceptions(self):
         exception_paths = []
         for e in self._exceptions:
-            exception_paths.append("{}.yml".format(e.replace('.','/')))
+            exception_paths.append("{}.yml".format(e.replace('.', '/')))
         return exception_paths

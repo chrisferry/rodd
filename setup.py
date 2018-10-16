@@ -14,9 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
 import sys
-from setuptools import setup, find_packages
 
 try:
     from setuptools import setup, find_packages
@@ -26,7 +24,7 @@ except ImportError:
     sys.exit(1)
 
 setup(name='pentagon_datadog',
-      version='0.1.0',
+      version='0.2.0',
       description='Pentagon Component to install common datadog monitors',
       author='ReactiveOp Inc.',
       author_email='reactive@reactiveops.com',
