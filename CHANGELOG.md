@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.0.0]
 ### Updated
 - GCP and AWS specific monitors separated out into their own directories
+- update new_host_delay field for the datadog.agent.up monitor to 10 minutes
 
 ### Added
 - GCP disk throttled read and write ops instance monitors
