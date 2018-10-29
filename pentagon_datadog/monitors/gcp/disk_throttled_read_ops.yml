@@ -5,13 +5,13 @@ tags: ['${environment}', reactiveops]
 include_tags: false
 no_data_timeframe: null
 silenced: {}
-new_host_delay: 300
-require_full_window: false
+new_host_delay: 600
+require_full_window: true
 notify_no_data: false
 renotify_interval: 0
+evaluation_delay: 60
 escalation_message: ''
-query: max(last_1h):max:gcp.gce.instance.disk.throttled_read_ops_count{kubernetescluster:${cluster},kubernetescluster:${cluster}}
-  by {host} >= 1
+query: min(last_2h):(avg:gcp.gce.instance.disk.throttled_read_ops_count{kubernetescluster:${cluster}} by {host}.rollup(avg, 300) / avg:gcp.gce.instance.disk.read_ops_count{kubernetescluster:${cluster}} by {host}.rollup(avg, 300) ) * 100 > 20
 message: |
   This metric indicates disk reads are being throttled. This can result in
     - timeouts during image pulls
@@ -20,5 +20,5 @@ message: |
   Are one or more pods using more disk read ops than expected?
   ${notifications}
 type: query alert
-thresholds: {critical: 1, critical_recovery: 0}
+thresholds: {critical: 30, warning: 20, critical_recovery: 15}
 timeout_h: 0
