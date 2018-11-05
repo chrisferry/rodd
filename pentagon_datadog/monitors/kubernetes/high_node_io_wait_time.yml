@@ -10,7 +10,7 @@ require_full_window: true
 notify_no_data: false
 renotify_interval: 0
 escalation_message: ''
-query: avg(last_10m):avg:system.cpu.iowait{kubernetescluster:${cluster},k8s.io/role/node:1}
+query: avg(last_10m):avg:system.cpu.iowait{kubernetescluster:${cluster}}
   by {host} > 50
 message: |
   {{#is_alert}}
