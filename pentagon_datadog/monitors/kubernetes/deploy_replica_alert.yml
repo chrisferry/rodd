@@ -10,7 +10,7 @@ require_full_window: false
 notify_no_data: false
 renotify_interval: 0
 escalation_message: ''
-query: avg(last_5m):avg:kubernetes_state.deployment.replicas_available{namespace:${namespace}} by {deployment} < 1
+query: avg(last_5m):avg:kubernetes_state.deployment.replicas_available{kubernetescluster:${cluster},namespace:${namespace}} by {deployment} < 1
 message: |
   {{#is_alert}}
   Available replicas is currently 0 for {{deployment.name}}
