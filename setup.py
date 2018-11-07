@@ -24,7 +24,7 @@ except ImportError:
     sys.exit(1)
 
 setup(name='pentagon_datadog',
-      version='1.1.0',
+      version='1.2.0',
       description='Pentagon Component to install common datadog monitors',
       author='ReactiveOp Inc.',
       author_email='reactive@reactiveops.com',
@@ -41,6 +41,7 @@ setup(name='pentagon_datadog',
           'files/*',
           'monitors/aws/*',
           'monitors/gcp/*',
+          'monitors/gcp-quotas/*',
           'monitors/kubernetes/*',
           'monitors/elasticsearch/*',
           'monitors/rds/*',
