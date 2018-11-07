@@ -1,6 +1,6 @@
 notify_audit: false
 locked: false
-name: '"[{{project.name}}] Backend Services Quota"'
+name: 'Backend Services Quota'
 tags: ['${environment}', reactiveops]
 include_tags: false
 no_data_timeframe: null

@@ -1,6 +1,6 @@
 notify_audit: false
 locked: false
-name: '"[{{project.name}}] Health Checks Quota"'
+name: 'Health Checks Quota'
 tags: ['${environment}', reactiveops]
 include_tags: false
 no_data_timeframe: null

@@ -1,6 +1,6 @@
 notify_audit: false
 locked: false
-name: '"[{{project.name}}] Internal Address Quota"'
+name: 'Buckets Quota'
 tags: ['${environment}', reactiveops]
 include_tags: false
 no_data_timeframe: null
@@ -11,13 +11,13 @@ notify_no_data: false
 renotify_interval: 0
 evaluation_delay: 900
 escalation_message: ''
-query: min(last_1h):( max:gcp.gce.project.global_internal_addresses.usage{*} by {project} / max:gcp.gce.project.quota.global_internal_addresses.limit{*} by {project} ) * 100 > 50
+query: min(last_1h):( max:gcp.gce.project.quota.backend_buckets.usage{*} by {project} / max:gcp.gce.project.quota.backend_buckets.limit{*} by {project} ) * 100 > 50
 message: |
   {{#is_alert}}
-  Internal Address Quota usage is {{value}}% on project {{project.name}}.
+  Buckets Quota usage is {{value}}% on project {{project.name}}.
   {{/is_alert}}
   {{#is_alert_recovery}}
-  Internal Address Quota Usage on project {{project.name}} has recovered.  Current value is {{value}}%.
+  Buckets Quota Usage on project {{project.name}} has recovered.  Current value is {{value}}%.
   {{/is_alert_recovery}}
   ${notifications}
 type: metric alert

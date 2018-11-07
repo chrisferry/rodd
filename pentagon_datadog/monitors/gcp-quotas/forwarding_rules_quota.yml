@@ -1,6 +1,6 @@
 notify_audit: false
 locked: false
-name: '"[{{project.name}}] Images Quota"'
+name: 'Forwarding Rules Quota'
 tags: ['${environment}', reactiveops]
 include_tags: false
 no_data_timeframe: null
@@ -11,13 +11,13 @@ notify_no_data: false
 renotify_interval: 0
 evaluation_delay: 900
 escalation_message: ''
-query: min(last_1h):( max:gcp.gce.project.quota.images.usage{*} by {project} / max:gcp.gce.project.quota.images.limit{*} by {project} ) * 100 > 50
+query: min(last_1h):( max:gcp.gce.project.quota.forwarding_rules.usage{*} by {project} / max:gcp.gce.project.quota.forwarding_rules.limit{*} by {project} ) * 100 > 50
 message: |
   {{#is_alert}}
-  Images Quota usage is {{value}}% on project {{project.name}}.
+  Forwarding Rules Quota usage is {{value}}% on project {{project.name}}.
   {{/is_alert}}
   {{#is_alert_recovery}}
-  Images Quota Usage on project {{project.name}} has recovered.  Current value is {{value}}%.
+  Forwarding Rules Quota Usage on project {{project.name}} has recovered.  Current value is {{value}}%.
   {{/is_alert_recovery}}
   ${notifications}
 type: metric alert
