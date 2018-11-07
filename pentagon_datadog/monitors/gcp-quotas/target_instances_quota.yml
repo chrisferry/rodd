@@ -1,6 +1,6 @@
 notify_audit: false
 locked: false
-name: 'Target Instances Quota"'
+name: 'Target Instances Quota'
 tags: ['${environment}', reactiveops]
 include_tags: false
 no_data_timeframe: null

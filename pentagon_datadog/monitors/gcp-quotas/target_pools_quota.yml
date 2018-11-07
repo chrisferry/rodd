@@ -1,6 +1,6 @@
 notify_audit: false
 locked: false
-name: 'Target Pools Quota"'
+name: 'Target Pools Quota'
 tags: ['${environment}', reactiveops]
 include_tags: false
 no_data_timeframe: null

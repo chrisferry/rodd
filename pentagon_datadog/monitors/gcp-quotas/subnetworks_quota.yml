@@ -1,6 +1,6 @@
 notify_audit: false
 locked: false
-name: 'Subnetworks Quota"'
+name: 'Subnetworks Quota'
 tags: ['${environment}', reactiveops]
 include_tags: false
 no_data_timeframe: null

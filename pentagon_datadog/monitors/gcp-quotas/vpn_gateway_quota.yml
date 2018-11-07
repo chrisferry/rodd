@@ -1,6 +1,6 @@
 notify_audit: false
 locked: false
-name: 'VPN Gateway Quota"'
+name: 'VPN Gateway Quota'
 tags: ['${environment}', reactiveops]
 include_tags: false
 no_data_timeframe: null
