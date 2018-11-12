@@ -8,7 +8,7 @@ silenced: {}
 new_host_delay: 900
 notify_no_data: false
 renotify_interval: 0
-query: "\"kubernetes_state.node.ready\".over(\"kubernetescluster:${cluster}\").by(\"host\").last(4).count_by_status()"
+query: "\"kubernetes_state.node.ready\".over(\"kubernetescluster:${cluster}\").by(\"host\").last(10).count_by_status()"
 message: |
   {{#is_warning}}
   A Node is not ready!
