@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - kubernetes.node_not_ready monitor
 
+## [1.2.1]
+## Fixed
+- Removed redundant kubernetes.container_restart monitor.
+
 ## [1.2.0]
 ### Added
 - GCP quota monitors
