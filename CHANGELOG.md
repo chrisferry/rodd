@@ -5,9 +5,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
-## [1.3.0]
+
+
+## [1.5.0]
 ### Added
 - kubernetes.node_not_ready monitor
+
+
+## [1.4.1]
+## Added
+- Dashboard for tuning resource utilization
+## Fixed
+- Tweaks to some alert thresholds to keep noise down
+- Tweaks to the resource dashboard to make it more accurate
+
 
 ## [1.2.1]
 ## Fixed
