@@ -84,6 +84,7 @@ graphs:
         width: normal
       aggregator: avg
     noGroupHosts: false
+  title: Bottom 10 CPU Utilization
 template_variables:
 - {default: '*', prefix: kubernetescluster, name: scope}
 - {default: '*', prefix: kube_namespace, name: kube_namespace}
