@@ -70,7 +70,7 @@ resource "datadog_timeboard" "reactiveops_kubernetes_resource_timeboard" {
     title = "Avg of kubernetes.memory.usage over $scope by pod_name"
     viz   = "timeseries"
     request {
-      q    = "top(avg:kubernetes.memory.usage{$scope} by {pod_name}, 10, 'mean', 'desc')/avg:kubernetes.memory.limits{$scope} by {pod_name}*100"
+      q    = "top(avg:kubernetes.memory.usage{$scope,$node,$kube_namespace,$kube_deployment} by {pod_name}, 10, 'mean', 'desc')/avg:kubernetes.memory.limits{$scope,$node,$kube_namespace,$kube_deployment} by {pod_name}*100"
       type = "line"
       aggregator = "avg"
       style = {
