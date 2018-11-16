@@ -32,4 +32,4 @@ message: |
   IP: {{host.ip}}
   {{/is_recovery}}
 type: service check
-thresholds: {critical:8, warning:3, ok:2}
+thresholds: {critical: 8, warning: 3, ok: 2}
