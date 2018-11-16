@@ -60,31 +60,16 @@ graphs:
     viz: timeseries
     status: done
     requests:
-    - q: top(avg:kubernetes.memory.usage{$scope,$node,$kube_namespace,$kube_deployment} by {pod_name}, 10, 'mean', 'desc')/avg:kubernetes.memory.limits{$scope}
-        by {pod_name}*100
+    - q: top(avg:kubernetes.memory.usage{$scope,$node,$kube_namespace,$kube_deployment}
+         by {pod_name}, 10, 'mean', 'desc')/avg:kubernetes.memory.limits{$scope,$node,$kube_namespace,$kube_deployment}
+         by {pod_name}*100
       aggregator: avg
       style: {width: normal, palette: dog_classic, type: solid}
       type: line
       conditional_formats: []
     autoscale: true
   title: Avg of kubernetes.memory.usage over $scope by pod_name
-- definition:
-    autoscale: false
-    noMetricHosts: false
-    custom_unit: '%'
-    viz: timeseries
-    requests:
-    - q: top(avg:docker.cpu.usage{$scope,$kube_namespace,$kube_deployment,$node} by {pod_name},
-        10, 'mean', 'asc')/avg:kubernetes.cpu.limits{$scope,$kube_namespace,$kube_deployment,$node}
-        by {pod_name}*100
-      type: line
-      style:
-        palette: dog_classic
-        type: solid
-        width: normal
-      aggregator: avg
-    noGroupHosts: false
-  title: Bottom 10 CPU Utilization
+
 template_variables:
 - {default: '*', prefix: kubernetescluster, name: scope}
 - {default: '*', prefix: kube_namespace, name: kube_namespace}
