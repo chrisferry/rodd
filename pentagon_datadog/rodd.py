@@ -58,57 +58,61 @@ class Rodd(ComponentBase):
 
         source = self._data.get('source')
         if source is None:
-            return
-
-        item_local_paths = []
-        if "." in source:
-            item_local_paths = ["{}/{}/{}.yml".format(self._path, self._item_type, ("/").join(source.split(".")))]
+            self._create_tf_file(self._data)
         else:
-            item_local_paths = glob.glob("{}/{}/{}/*.yml".format(self._path, self._item_type, source))
-        logging.debug("{}: {}".format(self._item_type.title(), item_local_paths))
 
-        for local_source_path in item_local_paths:
-            data = {}
-            logging.debug("Loading {}".format(local_source_path))
-            logging.debug("Source is: {} ".format(source))
-
-            if os.path.isfile(local_source_path) and ('/').join(local_source_path.split('/')[-2:]) in self.exceptions:
-                continue
-
-            with open(local_source_path, 'r') as item_file:
-                item_dict = yaml.load(item_file)
-            # If the items are being pulled from a family,
-            # then use all the values in the default item
-            if len(item_local_paths) > 1:
-                data = item_dict
+            item_local_paths = []
+            if "." in source:
+                item_local_paths = ["{}/{}/{}.yml".format(self._path, self._item_type, ("/").join(source.split(".")))]
             else:
-                # Otherwise, overwrite the item values with
-                # the values being passed in
-                data = merge_dict(self._data, item_dict)
+                item_local_paths = glob.glob("{}/{}/{}/*.yml".format(self._path, self._item_type, source))
+            logging.debug("{}: {}".format(self._item_type.title(), item_local_paths))
 
-            logging.debug('Final context: {}'.format(data))
+            for local_source_path in item_local_paths:
+                data = {}
+                logging.debug("Loading {}".format(local_source_path))
+                logging.debug("Source is: {} ".format(source))
 
-            try:
-                # transform item name
-                data = self._replace_definitions(data)
+                if os.path.isfile(local_source_path) and ('/').join(local_source_path.split('/')[-2:]) in self.exceptions:
+                    continue
 
-                raw_resource_name = data.get('name', data.get('title', 'Unknown Title'))
+                with open(local_source_path, 'r') as item_file:
+                    item_dict = yaml.load(item_file)
+                # If the items are being pulled from a family,
+                # then use all the values in the default item
+                if len(item_local_paths) > 1:
+                    data = item_dict
+                else:
+                    # Otherwise, overwrite the item values with
+                    # the values being passed in
+                    data = merge_dict(self._data, item_dict)
 
-                data['resource_name'] = re.sub('^_', '', re.sub('[^0-9a-zA-Z]+', '_', raw_resource_name.lower())).strip('_')
+                logging.debug('Final context: {}'.format(data))
 
-                logging.debug("New Name: {}".format(data['resource_name']))
+                self._create_tf_file(data)
 
-                self._flatten_options()
-                for key in data:
-                    if type(data[key]) in [unicode, str]:
-                        data[key] = data[key].replace('"', '\\"')
-                self._remove_init_file()
-                self._render_directory_templates(data)
+    def _create_tf_file(self, data):
+        try:
+            # transform item name
+            data = self._replace_definitions(data)
 
-            except Exception as e:
-                logging.error("Error occured configuring component")
-                logging.error(e)
-                logging.debug(traceback.format_exc(e))
+            raw_resource_name = data.get('name', data.get('title', 'Unknown Title'))
+
+            data['resource_name'] = re.sub('^_', '', re.sub('[^0-9a-zA-Z]+', '_', raw_resource_name.lower())).strip('_')
+
+            logging.debug("New Name: {}".format(data['resource_name']))
+
+            self._flatten_options()
+            for key in data:
+                if type(data[key]) in [unicode, str]:
+                    data[key] = data[key].replace('"', '\\"')
+            self._remove_init_file()
+            self._render_directory_templates(data)
+
+        except Exception as e:
+            logging.error("Error occured configuring component")
+            logging.error(e)
+            logging.debug(traceback.format_exc(e))
 
     @property
     def definitions(self):

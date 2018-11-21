@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import logging
+import traceback
 
 from pentagon_datadog.rodd import Rodd
 
@@ -40,4 +41,5 @@ class Monitors(Rodd):
                 m.add(destination, overwrite=True)
         except TypeError, e:
             logging.debug(e)
+            logging.debug(traceback.format_exc())
             logging.error("No monitors declared or no file argument passed.")
