@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.5.4]
 ### Fixed
 - bug where explicitly defined monitors were not added because they did not have a `source`
+- issue where `./datadog/rodd-example.yml` was not being created as stated in the docs
 
 ## [1.5.1]
 ### Nothing

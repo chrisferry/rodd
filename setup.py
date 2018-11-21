@@ -39,6 +39,7 @@ setup(name='pentagon_datadog',
       package_data={
         "pentagon_datadog": [
           'files/*',
+          'files/datadog/*',
           'monitors/aws/*',
           'monitors/gcp/*',
           'monitors/gcp-quotas/*',
