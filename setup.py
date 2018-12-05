@@ -24,7 +24,7 @@ except ImportError:
     sys.exit(1)
 
 setup(name='pentagon_datadog',
-      version='1.5.4',
+      version='1.5.5',
       description='Pentagon Component to install common datadog monitors',
       author='ReactiveOp Inc.',
       author_email='reactive@reactiveops.com',
