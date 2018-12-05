@@ -10,7 +10,7 @@ require_full_window: false
 notify_no_data: false
 renotify_interval: 0
 escalation_message: ''
-query: min(last_1h):min:aws.ebs.burst_balance{kubernetescluster:${cluster},kubernetescluster:${cluster}}
+query: min(last_1h):min:aws.ebs.burst_balance{kubernetescluster:${cluster}}
   by {host} <= 1
 message: |
   When burst capacity reaches 0, iops will be throttled. This can result in
