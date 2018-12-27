@@ -18,8 +18,8 @@ import hashlib
 import os
 import logging
 
-from pentagon_datadog.dashboard import Dashboard
-from pentagon_datadog.monitor import Monitor
+from pentagon_datadog.dashboard import Dashboards
+from pentagon_datadog.monitor import Monitors
 import oyaml as yaml
 
 
@@ -31,9 +31,9 @@ class TestDashboards(unittest.TestCase):
         with open(self.test_input_file) as f:
             self._data = yaml.load(f.read())
 
-        for dash in self._data.get('dashboards'):
-            d = Dashboard(dash)
-            d.add("./", overwrite=True)
+        ds = Dashboards(self._data)
+        ds.add("./", overwrite=True)
+
 
     def test_dashboard_output(self):
         gold = hashlib.md5(open("test/files/reactiveops_kubernetes_resource_timeboard.tf").read()).hexdigest()
@@ -55,11 +55,8 @@ class TestMonitors(unittest.TestCase):
     def setUp(self):
         with open(self.test_input_file) as f:
             self._data = yaml.load(f.read())
-        global_definitions = self._data.get('definitions',{})
-        for monitor in self._data.get('monitors'):
-            m = Monitor(monitor)
-            m._global_definitions = global_definitions
-            m.add('./', overwrite=True)
+        ms = Monitors(self._data)
+        ms.add("./", overwrite=True)
 
     def test_monitor_output(self):
         gold = hashlib.md5(open("test/files/test_increase_in_network_bytes_received.tf").read()).hexdigest()
