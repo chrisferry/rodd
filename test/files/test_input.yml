@@ -7,3 +7,4 @@ dashboards:
   - source: kubernetes.resources
 monitors: 
   - source: kubernetes.cluster_bytes_received
+  - source: kubernetes.containers_waiting
