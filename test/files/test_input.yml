@@ -5,6 +5,6 @@ definitions:
   environment: test
 dashboards:
   - source: kubernetes.resources
-monitors: 
+monitors:
   - source: kubernetes.cluster_bytes_received
-  - source: kubernetes.containers_waiting
+  - source: kubernetes.pods_pending
