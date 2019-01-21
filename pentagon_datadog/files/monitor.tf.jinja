@@ -81,3 +81,5 @@ resource "datadog_monitor" "{{ resource_name }}" {
   {%- endif %}
 
 }
+
+{{ foo | regex_trim('foo','foo','bar') }}
