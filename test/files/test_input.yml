@@ -8,3 +8,7 @@ dashboards:
 monitors:
   - source: kubernetes.cluster_bytes_received
   - source: kubernetes.pods_pending
+  - source: kubernetes.cluster_network_errors
+    definitions: 
+      cluster_network_errors_critical_threshold: 10
+      cluster_network_errors_warning_threshold: 5

@@ -10,7 +10,7 @@ require_full_window: true
 notify_no_data: false
 renotify_interval: 0
 escalation_message: ''
-query: avg(last_15m):avg:system.mem.pct_usable{kubernetescluster:${cluster}} by {host} < .1
+query: avg(last_15m):avg:system.mem.pct_usable{kubernetescluster:${cluster}} by {host} < ${cluster_memory_critical_threshold}
 message: |
   {{#is_alert}}
   Running out of free memory on {{host.name}}
@@ -23,5 +23,10 @@ message: |
   {{/is_alert_recovery}}
   ${notifications}
 type: query alert
-thresholds: {critical: 0.1, warning: 0.15}
+thresholds:
+  critical: ${cluster_memory_critical_threshold}
+  warning: ${cluster_memory_critical_warning}
 timeout_h: 0
+definition_defaults:
+  cluster_memory_critical_threshold: 0.1
+  cluster_memory_critical_warning: 0.15

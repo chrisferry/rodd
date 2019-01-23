@@ -10,7 +10,7 @@ notify_no_data: false
 no_data_timeframe: 0
 renotify_interval: 0
 escalation_message: ''
-query: min(last_30m):sum:kubernetes_state.pod.status_phase{kubernetescluster:${cluster},phase:pending} >= 1
+query: min(last_30m):sum:kubernetes_state.pod.status_phase{kubernetescluster:${cluster},phase:pending} >= ${pods_pending_critical_threshold}
 message: |
   {{#is_alert}}
   There has been at least 1 pod Pending for 30 minutes.
@@ -24,5 +24,8 @@ message: |
   {{/is_alert}}
   ${notifications}
 type: metric alert
-thresholds: {critical: 1}
+thresholds: 
+  critical: ${pods_pending_critical_threshold}
 timeout_h: 0
+definition_defaults:
+  pods_pending_critical_threshold: 1

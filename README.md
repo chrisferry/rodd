@@ -13,7 +13,8 @@ ReactiveOps best practices and sane defaults for dashboards and monitoring of Ku
 `rodd` is based on terraform, so plan to create your rodd monitors in an appropriate directory. Enter that terraform directory and initialize by running: `pentagon add datadog -o$(pwd)`. This will create `datadog.tf` and the directory `datadog` that will contain an `rodd-example.yml` to get you up and running. `datadog.tf` will define the provider and module to be included in your terraform directory. The `datadog` directory will contain the terraform files that define monitors and dashboards.
 
 ## Usage
-### Monitors
+### [Monitors](docs/monitors.md)
+
 We create a template with all the monitors we want to use. You can see the current monitors(yaml files) under [monitors](/monitors/). Later on, we talk about how to create our own monitors.
 
 Have a look at [rodd-example.yml](/pentagon_datadog/files/datadog/rodd-example.yaml) here we define(under definitions) variables we want to use such as `cluster`. Then under `monitors` we call out the monitors we want to use. Finally, when ready run:

@@ -32,4 +32,11 @@ message: |
   IP: {{host.ip}}
   {{/is_recovery}}
 type: service check
-thresholds: {critical: 8, warning: 3, ok: 2}
+thresholds:
+  critical: ${node_not_ready_critical_threshold}
+  warning: ${node_not_ready_warning_threshold}
+  ok: ${node_not_ready_ok_threshold}
+definition_defaults:
+  node_not_ready_critical_threshold: 8
+  node_not_ready_warning_threshold: 3
+  node_not_ready_ok_threshold: 2

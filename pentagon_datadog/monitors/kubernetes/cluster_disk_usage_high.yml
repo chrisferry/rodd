@@ -10,7 +10,7 @@ require_full_window: true
 notify_no_data: false
 renotify_interval: 0
 escalation_message: ''
-query: avg(last_15m):( avg:system.disk.total{kubernetescluster:${cluster}} by {host} - avg:system.disk.free{kubernetescluster:${cluster}} by {host} ) / avg:system.disk.total{kubernetescluster:${cluster}} by {host} * 100 > 90
+query: avg(last_15m):( avg:system.disk.total{kubernetescluster:${cluster}} by {host} - avg:system.disk.free{kubernetescluster:${cluster}} by {host} ) / avg:system.disk.total{kubernetescluster:${cluster}} by {host} * 100 > ${cluster_disk_usage_high_critical_threshold}
 message: |
     {{#is_alert}}
     Disk Usage has been above threshold over 15 minutes on {{host.name}}
@@ -26,5 +26,14 @@ message: |
     {{/is_warning}}
     ${notifications}
 type: query alert
-thresholds: {critical: 90, warning: 80, warning_recovery: 75, critical_recovery: 85}
+thresholds: 
+  critical: ${cluster_disk_usage_high_critical_threshold}
+  warning: ${cluster_disk_usage_high_warning_threshold}
+  warning_recovery: ${cluster_disk_usage_high_critical_recovery_threshold}
+  critical_recovery: ${cluster_disk_usage_high_warning_recovery_threshold}
 timeout_h: 0
+definition_defaults:
+  cluster_disk_usage_high_critical_threshold: 90
+  cluster_disk_usage_high_warning_threshold: 80
+  cluster_disk_usage_high_critical_recovery_threshold: 75
+  cluster_disk_usage_high_warning_recovery_threshold: 85

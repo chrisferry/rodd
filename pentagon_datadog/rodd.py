@@ -122,22 +122,32 @@ class Rodd(ComponentBase):
     def _replace_definitions(self, data):
         """ Replace ${definitions} with their value """
 
-        logging.debug("Definitions: {}".format(self.definitions))
+        def _replace_definition(string, definitions):
+            if type(string) == str:
+                for var, value in definitions.iteritems():
+                    logging.debug("Replacing Definition: {}:{}".format(var, value))
+                    string = string.replace("${%s}" % str(var), str(value))
+
+            return string
+
+        # Locally scopped copy of definitions to add monitor defaults to
+        _definitions = merge_dict(self.definitions, data.get('definition_defaults', {}))
+
+        logging.debug("Definitions: {}".format(_definitions))
         for key in data.keys():
 
-            # Just handle the tags separately since they are a list.  Probably a
+            # Just handle the tags and thresholds separately since they are a list.  Probably a
             # better way to do this in the future
-
             if key == 'tags':
                 logging.debug("Found tags: {}".format(data[key]))
                 for index, item in enumerate(data[key]):
-                    for var, value in self.definitions.iteritems():
-                        data[key][index] = data[key][index].replace("${%s}" % str(var), value)
-
-            if type(data[key]) == str or type(data) == unicode:
-                for var, value in self.definitions.iteritems():
-                    logging.debug("Replacing Definition: {}:{}".format(var, value))
-                    data[key] = data[key].replace("${%s}" % str(var), value)
+                    data[key][index] = _replace_definition(data[key][index], _definitions)
+            elif key == 'thresholds':
+                logging.debug("Found thresholds: {}".format(data[key]))
+                for threshold_type in data[key]:
+                    data[key][threshold_type] = _replace_definition(data[key][threshold_type], _definitions)
+            else:
+                data[key] = _replace_definition(data[key], _definitions)
         return data
 
     @property
