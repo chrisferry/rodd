@@ -1,0 +1,43 @@
+{#- Copyright 2018 ReactiveOps
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License. -#}
+
+resource "datadog_downtime" "{{ resource_name }}" {
+  scope           = [{{% for target in scope %}}"{{ target }}",{{% endfor %}}
+  ]
+  start_date      = "{{ start_date }}"
+  end_date        = "{{ end_date }}"
+
+  {{%- if recurrence_type %}}
+  recurrence {
+    type          = "{{ recurrence_type }}"
+    period        = {{ recurrence_period }}
+    {{%- if recurrence_week_days }}
+    week_days     = [{{%- for day in recurrence_week_days %}}"{{ day }}",{{%- endfor }}]
+    {{%- endif }}
+    {{%- if recurrence_until }}
+    until_date    = "{{ recurrence_until | quote }}"
+    {{%- endif }}
+  }
+  {{%- endif }}
+
+  {{%- if message }}
+  message = <<EOF
+  {{ message | quote }}
+  EOF
+  {{%- endif }}
+
+  {{%- if monitor_id }}
+  monitor_id      = {{ monitor_id }}
+  {{%- endif }}
+}
