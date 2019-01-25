@@ -15,6 +15,7 @@
 
 import logging
 import traceback
+import subprocess
 
 from pentagon_datadog.rodd import Rodd
 
@@ -39,6 +40,11 @@ class Monitors(Rodd):
                 m._exceptions = exceptions
                 m._global_definitions = global_definitions
                 m.add(destination, overwrite=True)
+            try:
+                tf = subprocess.check_output(['terraform', 'fmt', destination])
+                logging.debug("terraform fmt output:\n{}".format(tf))
+            except Exception as err:
+                logging.debug("Error running `terraform fmt`: {}".format(err))
         except TypeError, e:
             logging.debug(e)
             logging.debug(traceback.format_exc())
