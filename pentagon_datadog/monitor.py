@@ -43,6 +43,10 @@ class Monitors(Rodd):
             try:
                 tf = subprocess.check_output(['terraform', 'fmt', destination])
                 logging.debug("terraform fmt output:\n{}".format(tf))
+
+                validate = subprocess.check_output(['terraform', 'validate', '--check-variables=false', destination])
+            except subprocess.CalledProcessError as validateErr:
+                logger.warning("Error validating terraform: {}".format(validateErr.output))
             except Exception as err:
                 logging.debug("Error running `terraform fmt`: {}".format(err))
         except TypeError, e:
