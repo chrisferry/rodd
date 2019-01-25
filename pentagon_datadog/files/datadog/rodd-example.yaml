@@ -7,7 +7,14 @@ dashboards:
   - source: kubernetes.resources
 monitors:
   - source: kubernetes
+downtimes:
+  - name: Weekly Maintenance Window
+    scope: "*"
+    start: 1483308000
+    end: 1483365600
+    recurrence_type: days
+    recurrence_period: 1
 exceptions:
-  # the full path of the monitor or dashboard to exclude. 
+  # the full path of the monitor or dashboard to exclude.
   # this will prevent this monitor from being created
   - kubernetes.cluster_bytes_received

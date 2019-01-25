@@ -14,8 +14,21 @@ limitations under the License. -#}
 
 resource "datadog_downtime" "{{ resource_name }}" {
   scope           = [{% for target in scope %}"{{ target }}",{% endfor %}]
+  {%- if start_date %}
   start_date      = "{{ start_date }}"
+  {%- endif %}
+  {%- if end_date %}
   end_date        = "{{ end_date }}"
+  {%- endif %}
+  {%- if start %}
+  start           = {{ start }}
+  {%- endif %}
+  {%- if end %}
+  end             = {{ end }}
+  {%- endif %}
+  {%- if active %}
+  active          = "{{ active }}"
+  {%- endif %}
 
   {%- if recurrence_type %}
   recurrence {
@@ -39,4 +52,12 @@ resource "datadog_downtime" "{{ resource_name }}" {
   {%- if monitor_id %}
   monitor_id      = {{ monitor_id }}
   {%- endif %}
+
+  # Datadog API will reject dates in the past so let's ignore `start` and `end`
+  # arguments during lifecycle. To update or extend an existing downtime, temporarily
+  # remove the `ignore` section, apply timestamp changes, and re-apply the `ignore`
+  # section.
+  lifecycle {
+    ignore_changes = ["start", "end"]
+  }
 }
