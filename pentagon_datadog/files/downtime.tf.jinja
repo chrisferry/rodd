@@ -13,31 +13,30 @@ See the License for the specific language governing permissions and
 limitations under the License. -#}
 
 resource "datadog_downtime" "{{ resource_name }}" {
-  scope           = [{{% for target in scope %}}"{{ target }}",{{% endfor %}}
-  ]
+  scope           = [{% for target in scope %}"{{ target }}",{% endfor %}]
   start_date      = "{{ start_date }}"
   end_date        = "{{ end_date }}"
 
-  {{%- if recurrence_type %}}
+  {%- if recurrence_type %}
   recurrence {
     type          = "{{ recurrence_type }}"
     period        = {{ recurrence_period }}
-    {{%- if recurrence_week_days }}
-    week_days     = [{{%- for day in recurrence_week_days %}}"{{ day }}",{{%- endfor }}]
-    {{%- endif }}
-    {{%- if recurrence_until }}
-    until_date    = "{{ recurrence_until | quote }}"
-    {{%- endif }}
+    {%- if recurrence_week_days %}
+    week_days     = [{% for day in recurrence_week_days %}"{{ day }}",{% endfor %}]
+    {%- endif %}
+    {%- if recurrence_until %}
+    until_date    = "{{ recurrence_until }}"
+    {%- endif %}
   }
-  {{%- endif }}
+  {%- endif %}
 
-  {{%- if message }}
+  {%- if message %}
   message = <<EOF
-  {{ message | quote }}
+  {{ message }}
   EOF
-  {{%- endif }}
+  {%- endif %}
 
-  {{%- if monitor_id }}
+  {%- if monitor_id %}
   monitor_id      = {{ monitor_id }}
-  {{%- endif }}
+  {%- endif %}
 }
