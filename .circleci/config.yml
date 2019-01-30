@@ -24,7 +24,7 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            make install
+            sudo make install
       - run:
           name: Install RODD
           command: |
