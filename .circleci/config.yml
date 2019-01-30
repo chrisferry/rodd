@@ -40,6 +40,10 @@ jobs:
       steps:
         - checkout
         - run:
+            name: install dependencies
+            command: |
+              make install
+        - run:
             name: init .pypirc
             command: |
               echo -e "[pypi]" >> ~/.pypirc
