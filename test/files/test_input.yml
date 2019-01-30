@@ -9,6 +9,13 @@ monitors:
   - source: kubernetes.cluster_bytes_received
   - source: kubernetes.pods_pending
   - source: kubernetes.cluster_network_errors
-    definitions: 
+    definitions:
       cluster_network_errors_critical_threshold: 10
       cluster_network_errors_warning_threshold: 5
+downtimes:
+  - name: Test Maintenance Window
+    scope: "*"
+    start: 1614285704
+    end: 1645821704
+    recurrence_type: days
+    recurrence_period: 1
