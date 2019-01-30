@@ -22,6 +22,10 @@ jobs:
     steps:
       - checkout
       - run:
+          name: install dependencies
+          command: |
+            make install
+      - run:
           name: Install RODD
           command: |
             sudo pip install .
@@ -39,10 +43,6 @@ jobs:
         GITHUB_REPOSITORY: $CIRCLE_PROJECT_REPONAME
       steps:
         - checkout
-        - run:
-            name: install dependencies
-            command: |
-              make install
         - run:
             name: init .pypirc
             command: |
