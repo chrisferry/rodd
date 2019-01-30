@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.10.0]
+
+### Updated
+- `kubernets.cluster_cpu_usage_high` renamed to `kubernetes.system_load_average_high` to more closely match what is monitors
+- `kubernetes.system_load_average_high` now uses `system.load.norm.5` to make it relavant regardless of node CPU capacity
+
 ## [1.9.0]
 
 ### Removed
