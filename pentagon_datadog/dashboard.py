@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import logging
+import subprocess
 
 from pentagon_datadog.rodd import Rodd
 
@@ -34,6 +35,13 @@ class Dashboards(Rodd):
                 d = Dashboard(dash)
                 d._global_definitions = global_definitions
                 d.add(destination, overwrite=True)
+            try:
+                tf = subprocess.check_output(['terraform', 'fmt', destination])
+                logging.debug("terraform fmt output:\n{}".format(tf))
+
+                validate = subprocess.check_output(['terraform', 'validate', '--check-variables=false', destination])
+            except subprocess.CalledProcessError as validateErr:
+                logging.warning("Error validating terraform: {}".format(validateErr.output))
         except TypeError, e:
             logging.debug(e)
             logging.error("No dashboards declared or no file argument passed.")
