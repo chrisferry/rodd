@@ -58,15 +58,6 @@ class TestMonitors(unittest.TestCase):
         ms = Monitors(self._data)
         ms.add("./", overwrite=True)
 
-    def test_network_monitor_output(self):
-        gold = hashlib.md5(open("test/files/test_increase_in_network_bytes_received.tf").read()).hexdigest()
-        new =hashlib.md5(open("test_increase_in_network_bytes_received.tf").read()).hexdigest()
-
-        logging.debug(gold)
-        logging.debug(new)
-
-        self.assertEqual(gold, new)
-
     def test_pods_monitor_output(self):
         gold = hashlib.md5(open("test/files/test_pods_are_stuck_pending.tf").read()).hexdigest()
         new = hashlib.md5(open("test_pods_are_stuck_pending.tf").read()).hexdigest()
@@ -85,8 +76,6 @@ class TestMonitors(unittest.TestCase):
 
         self.assertEqual(gold, new)
 
-
     def tearDown(self):
-        os.remove("test_increase_in_network_bytes_received.tf")
         os.remove("test_pods_are_stuck_pending.tf")
         os.remove("test_increase_in_network_errors.tf")
