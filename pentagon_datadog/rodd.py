@@ -114,6 +114,16 @@ class Rodd(ComponentBase):
             logging.error(e)
             logging.debug(traceback.format_exc(e))
 
+    def _validate_tf(self, destination):
+        """Validate terraform in the path provided."""
+        try:
+            tf = subprocess.check_output(['terraform', 'fmt', destination])
+            logging.debug("terraform fmt output:\n{}".format(tf))
+
+            validate = subprocess.check_output(['terraform', 'validate', '--check-variables=false', destination])
+        except subprocess.CalledProcessError as validateErr:
+            logging.warning("Error validating terraform: {}".format(validateErr.output))
+
     @property
     def definitions(self):
         """ Return dictionary of merged definitions """

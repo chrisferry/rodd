@@ -15,7 +15,6 @@
 
 import logging
 import traceback
-import subprocess
 
 from pentagon_datadog.rodd import Rodd
 
@@ -40,13 +39,7 @@ class Monitors(Rodd):
                 m._exceptions = exceptions
                 m._global_definitions = global_definitions
                 m.add(destination, overwrite=True)
-            try:
-                tf = subprocess.check_output(['terraform', 'fmt', destination])
-                logging.debug("terraform fmt output:\n{}".format(tf))
-
-                validate = subprocess.check_output(['terraform', 'validate', '--check-variables=false', destination])
-            except subprocess.CalledProcessError as validateErr:
-                logging.warning("Error validating terraform: {}".format(validateErr.output))
+            self._validate_tf(destination)
         except TypeError, e:
             logging.debug(e)
             logging.debug(traceback.format_exc())
