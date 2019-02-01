@@ -19,6 +19,7 @@ import traceback
 import glob
 import re
 import oyaml as yaml
+import subprocess
 
 from pentagon.component import ComponentBase
 
