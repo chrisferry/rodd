@@ -21,7 +21,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Removed
 - `kubernetes.cluster_bytes_received` and `kubernetes.cluster_bytes_sent` monitors. Increased network traffic isn't usually a problem worth alerting on.
->>>>>>> master
 
 ## [1.8.2]
 ## Updated:
