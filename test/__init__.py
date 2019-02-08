@@ -20,6 +20,7 @@ import logging
 
 from pentagon_datadog.dashboard import Dashboards
 from pentagon_datadog.monitor import Monitors
+from pentagon_datadog.downtime import Downtimes
 import oyaml as yaml
 
 
@@ -79,3 +80,26 @@ class TestMonitors(unittest.TestCase):
     def tearDown(self):
         os.remove("test_pods_are_stuck_pending.tf")
         os.remove("test_increase_in_network_errors.tf")
+
+
+class TestDowntimes(unittest.TestCase):
+    name = "test-downtimes"
+    test_input_file = "test/files/test_input.yml"
+
+    def setUp(self):
+        with open(self.test_input_file) as f:
+            self._data = yaml.load(f.read())
+        ms = Downtimes(self._data)
+        ms.add("./", overwrite=True)
+
+    def test_downtime_output(self):
+        gold = hashlib.md5(open("test/files/test_maintenance_window.tf").read()).hexdigest()
+        new =hashlib.md5(open("test_maintenance_window.tf").read()).hexdigest()
+
+        logging.debug(gold)
+        logging.debug(new)
+
+        self.assertEqual(gold, new)
+
+    def tearDown(self):
+        os.remove("test_maintenance_window.tf")

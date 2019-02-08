@@ -18,6 +18,7 @@ import logging
 from pentagon.component import ComponentBase
 from monitor import Monitor, Monitors
 from dashboard import Dashboard, Dashboards
+from downtime import Downtime, Downtimes
 
 
 class Datadog(ComponentBase):
