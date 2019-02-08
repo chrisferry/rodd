@@ -28,8 +28,13 @@ class Downtimes(Rodd):
         global_definitions = self._data.get('definitions', {})
         downtimes = self._data.get('downtimes', {})
 
-        for downtime in downtimes:
-            logging.debug(downtime)
-            d = Downtime(downtime)
-            d._global_definitions = global_definitions
-            d.add(destination, overwrite=True)
+        try:
+            for downtime in downtimes:
+                logging.debug(downtime)
+                d = Downtime(downtime)
+                d._global_definitions = global_definitions
+                d.add(destination, overwrite=True)
+            self._validate_tf(destination)
+        except TypeError, e:
+            logging.debug(e)
+            logging.debug(traceback.format_exc())
