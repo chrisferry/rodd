@@ -39,6 +39,7 @@ class Monitors(Rodd):
                 m._exceptions = exceptions
                 m._global_definitions = global_definitions
                 m.add(destination, overwrite=True)
+            self._validate_tf(destination)
         except TypeError, e:
             logging.debug(e)
             logging.debug(traceback.format_exc())

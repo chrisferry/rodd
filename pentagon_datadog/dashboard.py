@@ -34,6 +34,7 @@ class Dashboards(Rodd):
                 d = Dashboard(dash)
                 d._global_definitions = global_definitions
                 d.add(destination, overwrite=True)
+            self._validate_tf(destination)
         except TypeError, e:
             logging.debug(e)
             logging.error("No dashboards declared or no file argument passed.")

@@ -33,11 +33,11 @@ class TestDashboards(unittest.TestCase):
 
         ds = Dashboards(self._data)
         ds.add("./", overwrite=True)
-
+        pass
 
     def test_dashboard_output(self):
         gold = hashlib.md5(open("test/files/reactiveops_kubernetes_resource_timeboard.tf").read()).hexdigest()
-        new =hashlib.md5(open("reactiveops_kubernetes_resource_timeboard.tf").read()).hexdigest()
+        new = hashlib.md5(open("./reactiveops_kubernetes_resource_timeboard.tf").read()).hexdigest()
 
         logging.debug(gold)
         logging.debug(new)

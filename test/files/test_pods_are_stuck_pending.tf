@@ -1,9 +1,9 @@
 resource "datadog_monitor" "test_pods_are_stuck_pending" {
   # Required Arguments
-  name               = "[test] Pods are stuck Pending"
-  type               = "metric alert"
+  name = "[test] Pods are stuck Pending"
+  type = "metric alert"
 
-  message            = <<EOF
+  message = <<EOF
   {{#is_alert}}
 There has been at least 1 pod Pending for 30 minutes.
 There are currently {{value}} pods Pending.
@@ -17,15 +17,17 @@ Pods are no longer pending.
 ${notifications}
 
   EOF
+
   query = "min(last_30m):sum:kubernetes_state.pod.status_phase{kubernetescluster:cluster_name,phase:pending} >= 1"
 
   # Optional Arguments
   new_host_delay = 300
+
   thresholds {
     critical = 1
   }
-  require_full_window = true
-  tags = ["test", "reactiveops"]
-  silenced = {}
 
+  require_full_window = true
+  tags                = ["test", "reactiveops"]
+  silenced            = {}
 }
