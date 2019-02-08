@@ -19,6 +19,7 @@ import traceback
 import glob
 import re
 import oyaml as yaml
+import subprocess
 
 from pentagon.component import ComponentBase
 
@@ -113,6 +114,17 @@ class Rodd(ComponentBase):
             logging.error("Error occured configuring component")
             logging.error(e)
             logging.debug(traceback.format_exc(e))
+
+    def _validate_tf(self, destination):
+        """Validate terraform in the path provided."""
+        try:
+            if len([file for file in os.listdir(destination) if os.path.isfile(file) and file.endswith(".tf")]) > 0:
+                tf = subprocess.check_output(['terraform', 'fmt', destination])
+                logging.debug("terraform fmt output:\n{}".format(tf))
+
+                validate = subprocess.check_output(['terraform', 'validate', '--check-variables=false', destination])
+        except subprocess.CalledProcessError as validateErr:
+            logging.warning("Error validating terraform: {}".format(validateErr.output))
 
     @property
     def definitions(self):

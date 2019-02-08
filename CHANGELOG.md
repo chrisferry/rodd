@@ -4,10 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Unreleased
-- after templates are rendered, `terraform fmt` is run.
-- add support for scheduling downtimes
+## [1.10.1]
 
+### Added
+- Run `terraform fmt` and `terraform validate` after terraform is generated.
+- Add support for Downtimes
+
+## [1.10.0]
+
+### Updated
+- `kubernets.cluster_cpu_usage_high` renamed to `kubernetes.system_load_average_high` to more closely match what is monitors
+- `kubernetes.system_load_average_high` now uses `system.load.norm.5` to make it relavant regardless of node CPU capacity
+
+## [1.9.0]
+
+### Removed
+- `kubernetes.cluster_bytes_received` and `kubernetes.cluster_bytes_sent` monitors. Increased network traffic isn't usually a problem worth alerting on.
 
 ## [1.8.2]
 ## Updated:

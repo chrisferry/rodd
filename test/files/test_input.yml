@@ -6,7 +6,6 @@ definitions:
 dashboards:
   - source: kubernetes.resources
 monitors:
-  - source: kubernetes.cluster_bytes_received
   - source: kubernetes.pods_pending
   - source: kubernetes.cluster_network_errors
     definitions:
