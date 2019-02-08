@@ -1,10 +1,11 @@
 resource "datadog_downtime" "test_maintenance_window" {
-  scope           = ["*",]
-  start           = 1614285704
-  end             = 1645821704
+  scope = ["*"]
+  start = 1614285704
+  end   = 1645821704
+
   recurrence {
-    type          = "days"
-    period        = 1
+    type   = "days"
+    period = 1
   }
 
   # Datadog API will reject dates in the past so let's ignore `start` and `end`
