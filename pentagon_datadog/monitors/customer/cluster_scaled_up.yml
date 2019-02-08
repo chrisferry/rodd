@@ -1,0 +1,23 @@
+notify_audit: false
+locked: false
+name: 'Cluster Scaled Up'
+tags: [reactiveops]
+include_tags: true
+no_data_timeframe: null
+silenced: {}
+notify_no_data: false
+renotify_interval: 0
+query: "events('priority:all ScaledUpGroup: sources:kubernetes Scale-up: tags:source_component:cluster-autoscaler').rollup('count').last('5m') >= ${cluster_scaled_up_critical_threshold}"
+message: |
+  Your cluster was scaled up!
+  ```
+  {{event.title}}
+  {{event.text}}
+  ```
+  ${notifications}
+type: event alert
+thresholds:
+  critical: ${cluster_scaled_up_critical_threshold}
+timeout_h: 0
+definition_defaults:
+  cluster_scaled_up_critical_threshold: 1
