@@ -1,7 +1,7 @@
 notify_audit: false
 locked: false
 name: '[${environment}] Pods are Pending'
-tags: ['${environment}', reactiveops]
+tags: ['${environment}', reactiveops-apps]
 include_tags: false
 silenced: {}
 new_host_delay: 300
@@ -10,7 +10,7 @@ notify_no_data: false
 no_data_timeframe: 0
 renotify_interval: 0
 escalation_message: ''
-query: min(last_30m):sum:kubernetes_state.pod.status_phase{kubernetescluster:${cluster},phase:pending} by {kube_deployment} >= ${pods_pending_critical_threshold}
+query: min(last_30m):sum:kubernetes_state.pod.status_phase{kubernetescluster:${cluster},!namespace:kube-system,!namespace:infra,!namespace:helm-system,phase:pending} by {kube_deployment} >= ${pods_pending_critical_threshold}
 message: |
   {{#is_alert}}
   There are currently {{value}} {{kube_deployment.name}} pods Pending.
@@ -20,7 +20,7 @@ message: |
   {{/is_alert}}
   ${notifications}
 type: metric alert
-thresholds: 
+thresholds:
   critical: ${pods_pending_critical_threshold}
 timeout_h: 0
 definition_defaults:

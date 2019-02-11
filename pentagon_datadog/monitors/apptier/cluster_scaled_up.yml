@@ -1,7 +1,7 @@
 notify_audit: false
 locked: false
 name: 'Cluster Scaled Up'
-tags: [reactiveops]
+tags: [reactiveops-apps]
 include_tags: true
 no_data_timeframe: null
 silenced: {}

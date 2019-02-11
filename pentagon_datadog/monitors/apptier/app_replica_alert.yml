@@ -1,7 +1,7 @@
 notify_audit: false
 locked: false
-name: '[${environment}] Deployment replicas'
-tags: ['${environment}', reactiveops]
+name: '[${environment}] Application Deployment replicas'
+tags: ['${environment}', reactiveops-apps]
 include_tags: true
 no_data_timeframe: null
 silenced: {}
@@ -10,7 +10,7 @@ require_full_window: false
 notify_no_data: false
 renotify_interval: 0
 escalation_message: ''
-query: max(last_10m):max:kubernetes_state.deployment.replicas_available{kubernetescluster:${cluster},namespace:${namespace}} by {deployment} <= ${deploy_replica_alert_critical_threshold}
+query: max(last_10m):max:kubernetes_state.deployment.replicas_available{kubernetescluster:${cluster},!namespace:kube-system,!namespace:infra,!namespace:helm-system} by {deployment} <= ${deploy_replica_alert_critical_threshold}
 message: |
   {{#is_alert}}
   Available replicas is currently 0 for {{deployment.name}}
