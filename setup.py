@@ -46,7 +46,7 @@ setup(name='pentagon_datadog',
           'monitors/kubernetes/*',
           'monitors/elasticsearch/*',
           'monitors/rds/*',
-          'monitors/customer/*',
+          'monitors/apptier/*',
           'dashboards/kubernetes/*'
         ]
       },
