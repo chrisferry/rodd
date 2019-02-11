@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+- `apptier.app_pods_are_pending` monitor added to monitor non system related namespaces with pending pods.
+- `apptier.app_replica_alert` monitor added to monitor non system related namespaces with deployments that have 0 replicas available.
+- `apptier.cluster_scaled_up` monitor added to alert when cluster nodes are scaled up.
+
 ## [1.10.1]
 
 ### Added
