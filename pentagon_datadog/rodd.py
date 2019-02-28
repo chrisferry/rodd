@@ -90,7 +90,16 @@ class Rodd(ComponentBase):
 
                 logging.debug('Final context: {}'.format(data))
 
-                self._create_tf_file(data)
+                # If namespace is a list, create a separate tf file per namespace
+                definitions = data.get('definitions', {})
+                if isinstance(definitions.get('namespace'), list):
+                    for namespace in definitions.get('namespace', []):
+                        data_copy = data.copy()
+                        data_copy['definitions']['namespace'] = namespace
+                        data_copy['name'] = '{} {}'.format(data.get('name'), namespace)
+                        self._create_tf_file(data_copy)
+                else:
+                    self._create_tf_file(data)
 
     def _create_tf_file(self, data):
         try:
