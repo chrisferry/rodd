@@ -10,13 +10,13 @@ require_full_window: true
 notify_no_data: false
 renotify_interval: 0
 escalation_message: ''
-query: avg(last_15m):( avg:system.disk.total{kubernetescluster:${cluster}} by {host} - avg:system.disk.free{kubernetescluster:${cluster}} by {host} ) / avg:system.disk.total{kubernetescluster:${cluster}} by {host} * 100 > ${cluster_disk_usage_high_critical_threshold}
+query: avg(last_30m):( avg:system.disk.total{kubernetescluster:${cluster}} by {host} - avg:system.disk.free{kubernetescluster:${cluster}} by {host} ) / avg:system.disk.total{kubernetescluster:${cluster}} by {host} * 100 > ${cluster_disk_usage_high_critical_threshold}
 message: |
     {{#is_alert}}
-    Disk Usage has been above threshold over 15 minutes on {{host.name}}
+    Disk Usage has been above threshold over 30 minutes on {{host.name}}
     {{/is_alert}}
     {{#is_warning}}
-    Disk Usage has been above threshold over 15 minutes on {{host.name}}
+    Disk Usage has been above threshold over 30 minutes on {{host.name}}
     {{/is_warning}}
     {{^is_alert}}
     Disk Usage has recovered on {{host.name}}
