@@ -38,7 +38,8 @@ class Monitors(Rodd):
                 m = Monitor(monitor)
                 m._exceptions = exceptions
                 m._global_definitions = global_definitions
-                m.add(destination, overwrite=True)
+                m.add()
+            m.generate_resource_tf(destination, overwrite=True)
             self._validate_tf(destination)
         except TypeError, e:
             logging.debug(e)

@@ -32,6 +32,7 @@ class Rodd(ComponentBase):
     _path = os.path.dirname(__file__)
     _global_definitions = {}
     _exceptions = []
+    _resources = {}
 
     def _render_directory_templates(self, data):
         """ Overide Component method _render_directory_templates.
@@ -51,11 +52,8 @@ class Rodd(ComponentBase):
             for key, value in self._data.get('options').iteritems():
                 self._data[key] = value
 
-    def add(self, destination, overwrite=False):
+    def add(self):
         """ Copies files and templates from <component>/files and templates the *.jinja files """
-
-        self._destination = destination
-        self._overwrite = overwrite
 
         source = self._data.get('source')
         if source is None:
@@ -71,8 +69,10 @@ class Rodd(ComponentBase):
 
             for local_source_path in item_local_paths:
                 data = {}
+                resource_id = '.'.join((local_source_path.split('.')[0]).split('/')[-3:])
                 logging.debug("Loading {}".format(local_source_path))
                 logging.debug("Source is: {} ".format(source))
+                logging.debug("Resource id is: {} ".format(resource_id))
 
                 if os.path.isfile(local_source_path) and ('/').join(local_source_path.split('/')[-2:]) in self.exceptions:
                     continue
@@ -88,18 +88,27 @@ class Rodd(ComponentBase):
                     # the values being passed in
                     data = merge_dict(self._data, item_dict)
 
-                logging.debug('Final context: {}'.format(data))
+                data['definition_defaults'] = merge_dict(data.get('definition_defaults', {}), self._global_definitions)
 
-                # If namespace is a list, create a separate tf file per namespace
-                definitions = data.get('definitions', {})
-                if isinstance(definitions.get('namespace'), list):
-                    for namespace in definitions.get('namespace', []):
-                        data_copy = data.copy()
-                        data_copy['definitions']['namespace'] = namespace
-                        data_copy['name'] = '{} {}'.format(data.get('name'), namespace)
-                        self._create_tf_file(data_copy)
-                else:
-                    self._create_tf_file(data)
+                logging.debug('Final context: {}'.format(data))
+                self._resources[resource_id] = data
+
+    def generate_resource_tf(self, destination, overwrite=False):
+        self._overwrite = overwrite
+        self._destination = destination
+
+        for key, data in self._resources.items():
+            definitions = merge_dict(data.get('definition_defaults', {}), self.definitions, {})
+            definition_namespace = definitions.get('namespace', "")
+            data['definitions'] = data.get('definitions', {})
+            # If resource is namespace specific, create a seaprate resource per namespace
+            if data.get('namespaced', False) and isinstance(definition_namespace, list):
+                for namespace in definition_namespace:
+                    data_copy = data.copy()
+                    data_copy['definitions']['namespace'] = namespace
+                    self._create_tf_file(data_copy)
+            else:
+                self._create_tf_file(data)
 
     def _create_tf_file(self, data):
         try:
@@ -109,7 +118,6 @@ class Rodd(ComponentBase):
             raw_resource_name = data.get('name', data.get('title', 'Unknown Title'))
 
             data['resource_name'] = re.sub('^_', '', re.sub('[^0-9a-zA-Z]+', '_', raw_resource_name.lower())).strip('_')
-
             logging.debug("New Name: {}".format(data['resource_name']))
 
             self._flatten_options()
@@ -152,7 +160,7 @@ class Rodd(ComponentBase):
             return string
 
         # Locally scopped copy of definitions to add monitor defaults to
-        _definitions = merge_dict(self.definitions, data.get('definition_defaults', {}))
+        _definitions = merge_dict(data.get('definitions'), data.get('definition_defaults', {}))
 
         logging.debug("Definitions: {}".format(_definitions))
         for key in data.keys():

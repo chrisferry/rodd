@@ -1,7 +1,8 @@
 notify_audit: false
 locked: false
-name: '[${environment}] Deployment replica alert'
+name: '[${environment}] Deployment replica alert ${namespace}'
 tags: ['${environment}', reactiveops]
+namespaced: true
 include_tags: true
 no_data_timeframe: null
 silenced: {}
