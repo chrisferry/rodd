@@ -18,7 +18,7 @@ ${notifications}
 
   EOF
 
-  query = "min(last_30m):sum:kubernetes_state.pod.status_phase{kubernetescluster:cluster_name,phase:pending} >= 1"
+  query = "min(last_30m):sum:kubernetes_state.pod.status_phase{kubernetescluster:cluster_name,phase:running} - sum:kubernetes_state.pod.status_phase{kubernetescluster:cluster_name,phase:running} + sum:kubernetes_state.pod.status_phase{kubernetescluster:cluster_name,phase:pending}.fill(zero) >= 1"
 
   # Optional Arguments
   new_host_delay = 300
