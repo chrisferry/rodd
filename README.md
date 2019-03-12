@@ -109,7 +109,7 @@ definitions:
 monitors:
   - source: kubernetes.deploy_replica_alert
     definitions:
-      namespace: ['kube-system', 'infra', 'tiller']
+      namespace: ['infra', 'kube-system', 'rbac-manager']
 ```
 
 #### Exceptions
