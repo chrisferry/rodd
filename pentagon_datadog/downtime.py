@@ -14,27 +14,15 @@
 # limitations under the License.
 
 import logging
-import traceback
 
 from pentagon_datadog.rodd import Rodd
 
-class Downtime(Rodd):
-    template_file_name = 'downtime.tf.jinja'
-    _item_type = 'downtime'
 
 class Downtimes(Rodd):
-    def add(self, destination, overwrite=False):
-        logging.debug("Adding downtime .tf files")
-        global_definitions = self._data.get('definitions', {})
-        downtimes = self._data.get('downtimes', {})
 
-        try:
-            for downtime in downtimes:
-                logging.debug(downtime)
-                d = Downtime(downtime)
-                d._global_definitions = global_definitions
-                d.add(destination, overwrite=True)
-            self._validate_tf(destination)
-        except TypeError, e:
-            logging.debug(e)
-            logging.debug(traceback.format_exc())
+    def add(self, destination, overwrite=False):
+        self.template_file_name = 'downtime.tf.jinja'
+        self._item_type = 'downtimes'
+        logging.debug("Generating downtime .tf files")
+        Rodd.add(self, destination, overwrite=True)
+        self._validate_tf(destination)

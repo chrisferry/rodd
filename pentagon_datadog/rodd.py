@@ -28,10 +28,15 @@ from pentagon.helpers import render_template, merge_dict
 
 class Rodd(ComponentBase):
     _files_directory = os.path.dirname(__file__) + "/files/"
-    _defaults = {'options': {}}
-    _path = os.path.dirname(__file__)
-    _global_definitions = {}
-    _exceptions = []
+
+    def __init__(self, data, additional_args=None, **kwargs):
+        self._defaults = {'options': {}}
+        self._path = os.path.dirname(__file__)
+
+        super(Rodd, self).__init__(data, additional_args, **kwargs)
+
+        self._global_definitions = self._data.get('definitions', {})
+        self._exceptions = self._data.get('exceptions', [])
 
     def _render_directory_templates(self, data):
         """ Overide Component method _render_directory_templates.
@@ -44,12 +49,12 @@ class Rodd(ComponentBase):
 
         render_template(self.template_file_name, self._files_directory, target_file_name, data, delete_template=False, overwrite=self._overwrite)
 
-    def _flatten_options(self):
+    def _flatten_options(self, data):
         """ If there is a options key in the _data, flatten it
         This makes transformation from datadog json easier """
-        if self._data.get('options'):
-            for key, value in self._data.get('options').iteritems():
-                self._data[key] = value
+        for key, value in data.get('options', {}).iteritems():
+            data[key] = value
+        return data
 
     def add(self, destination, overwrite=False):
         """ Copies files and templates from <component>/files and templates the *.jinja files """
@@ -57,40 +62,70 @@ class Rodd(ComponentBase):
         self._destination = destination
         self._overwrite = overwrite
 
-        source = self._data.get('source')
-        if source is None:
-            self._create_tf_file(self._data)
-        else:
+        processed_resources = {}
 
-            item_local_paths = []
-            if "." in source:
-                item_local_paths = ["{}/{}/{}.yml".format(self._path, self._item_type, ("/").join(source.split(".")))]
+        if self._item_type not in self._data:
+            raise Exception('No {} declared or no file argument passed'.format(self._item_type))
+            return
+
+        for resource in self._data[self._item_type]:
+            source = resource.get('source')
+            if source is None:
+                self._create_tf_file(resource)
             else:
-                item_local_paths = glob.glob("{}/{}/{}/*.yml".format(self._path, self._item_type, source))
-            logging.debug("{}: {}".format(self._item_type.title(), item_local_paths))
+                item_local_paths = []
+                if "." in source:
+                    item_local_paths = ["{}/{}/{}.yml".format(self._path, self._item_type, ("/").join(source.split(".")))]
+                else:
+                    item_local_paths = glob.glob("{}/{}/{}/*.yml".format(self._path, self._item_type, source))
+                logging.debug("{}: {}".format(self._item_type.title(), item_local_paths))
 
-            for local_source_path in item_local_paths:
-                data = {}
-                logging.debug("Loading {}".format(local_source_path))
-                logging.debug("Source is: {} ".format(source))
+                for local_source_path in item_local_paths:
+                    resource_data = {}
+                    resource_id = '.'.join((local_source_path.split('.')[0]).split('/')[-3:])
+                    logging.debug("Loading {}".format(local_source_path))
+                    logging.debug("Source is: {} ".format(source))
 
-                if os.path.isfile(local_source_path) and ('/').join(local_source_path.split('/')[-2:]) in self.exceptions:
+                    if os.path.isfile(local_source_path) and ('/').join(local_source_path.split('/')[-2:]) in self.exceptions:
+                        continue
+
+                    with open(local_source_path, 'r') as item_file:
+                        item_dict = yaml.load(item_file)
+                    # If the items are being pulled from a family,
+                    # then use all the values in the default item
+                    if len(item_local_paths) > 1:
+                        resource_data = item_dict
+                    else:
+                        # Otherwise, overwrite the item values with
+                        # the values being passed in
+                        resource_data = merge_dict(resource, item_dict)
+
+                    processed_resources[resource_id] = resource_data
+
+                    logging.debug('Processed resource: {}'.format(resource_data))
+
+        self._save_processed_resources(processed_resources)
+
+    def _save_processed_resources(self, resources):
+        for key, data in resources.iteritems():
+            definitions = self.definitions(data)
+            definition_namespace = definitions.get('namespace')
+
+            if data.get('vary_by_namespace'):
+                if isinstance(definition_namespace, list):
+                    for namespace in definition_namespace:
+                        data_copy = data.copy()
+                        if not data_copy.get('definitions'):
+                            data_copy['definitions'] = {}
+                        data_copy['definitions']['namespace'] = namespace
+                        self._create_tf_file(data_copy)
                     continue
 
-                with open(local_source_path, 'r') as item_file:
-                    item_dict = yaml.load(item_file)
-                # If the items are being pulled from a family,
-                # then use all the values in the default item
-                if len(item_local_paths) > 1:
-                    data = item_dict
-                else:
-                    # Otherwise, overwrite the item values with
-                    # the values being passed in
-                    data = merge_dict(self._data, item_dict)
+                if not definition_namespace:
+                    logging.warning('Namespace value missing, required for {}'.format(key))
+                    continue
 
-                logging.debug('Final context: {}'.format(data))
-
-                self._create_tf_file(data)
+            self._create_tf_file(data)
 
     def _create_tf_file(self, data):
         try:
@@ -100,13 +135,14 @@ class Rodd(ComponentBase):
             raw_resource_name = data.get('name', data.get('title', 'Unknown Title'))
 
             data['resource_name'] = re.sub('^_', '', re.sub('[^0-9a-zA-Z]+', '_', raw_resource_name.lower())).strip('_')
-
             logging.debug("New Name: {}".format(data['resource_name']))
 
-            self._flatten_options()
+            data = self._flatten_options(data)
+
             for key in data:
                 if type(data[key]) in [unicode, str]:
                     data[key] = data[key].replace('"', '\\"')
+
             self._remove_init_file()
             self._render_directory_templates(data)
 
@@ -126,11 +162,6 @@ class Rodd(ComponentBase):
         except subprocess.CalledProcessError as validateErr:
             logging.warning("Error validating terraform: {}".format(validateErr.output))
 
-    @property
-    def definitions(self):
-        """ Return dictionary of merged definitions """
-        return merge_dict(self.global_definitions, self._data.get('definitions', {}), clobber=True)
-
     def _replace_definitions(self, data):
         """ Replace ${definitions} with their value """
 
@@ -143,7 +174,7 @@ class Rodd(ComponentBase):
             return string
 
         # Locally scopped copy of definitions to add monitor defaults to
-        _definitions = merge_dict(self.definitions, data.get('definition_defaults', {}))
+        _definitions = self.definitions(data)
 
         logging.debug("Definitions: {}".format(_definitions))
         for key in data.keys():
@@ -162,9 +193,11 @@ class Rodd(ComponentBase):
                 data[key] = _replace_definition(data[key], _definitions)
         return data
 
-    @property
-    def global_definitions(self):
-        return self._global_definitions
+    def definitions(self, data):
+        """ Return dictionary of merged definitions """
+        definitions = merge_dict(self._global_definitions.copy(), data.get('definition_defaults', {}), clobber=True)
+        definitions = merge_dict(definitions, data.get('definitions', {}), clobber=True)
+        return definitions
 
     @property
     def exceptions(self):
