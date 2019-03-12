@@ -57,7 +57,7 @@ class Rodd(ComponentBase):
         return data
 
     def add(self, destination, overwrite=False):
-        """ Copies files and templates from <component>/files and templates the *.jinja files """
+        """ Build up a set of Rodd resources and then create a TF file for each. """
 
         self._destination = destination
         self._overwrite = overwrite
@@ -107,10 +107,12 @@ class Rodd(ComponentBase):
         self._save_processed_resources(processed_resources)
 
     def _save_processed_resources(self, resources):
+        """ Loop through dict of processed resources and generates tf file for each one. """
         for key, data in resources.iteritems():
             definitions = self.definitions(data)
             definition_namespace = definitions.get('namespace')
 
+            # Create multiple tf files for resources that vary by namespace
             if data.get('vary_by_namespace'):
                 if isinstance(definition_namespace, list):
                     for namespace in definition_namespace:
@@ -128,6 +130,7 @@ class Rodd(ComponentBase):
             self._create_tf_file(data)
 
     def _create_tf_file(self, data):
+        """ Create TF file for a single resource. """
         try:
             # transform item name
             data = self._replace_definitions(data)
@@ -152,7 +155,7 @@ class Rodd(ComponentBase):
             logging.debug(traceback.format_exc(e))
 
     def _validate_tf(self, destination):
-        """Validate terraform in the path provided."""
+        """ Validate terraform in the path provided. """
         try:
             if len([file for file in os.listdir(destination) if os.path.isfile(file) and file.endswith(".tf")]) > 0:
                 tf = subprocess.check_output(['terraform', 'fmt', destination])
@@ -194,7 +197,7 @@ class Rodd(ComponentBase):
         return data
 
     def definitions(self, data):
-        """ Return dictionary of merged definitions """
+        """ Return dictionary of merged definitions: global, definition_defaults, definitions """
         definitions = merge_dict(self._global_definitions.copy(), data.get('definition_defaults', {}), clobber=True)
         definitions = merge_dict(definitions, data.get('definitions', {}), clobber=True)
         return definitions
