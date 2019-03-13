@@ -199,7 +199,7 @@ class Rodd(ComponentBase):
 
     def definitions(self, data):
         """ Return dictionary of merged definitions: global, definition_defaults, definitions """
-        definitions = merge_dict(self._global_definitions.copy(), data.get('definition_defaults', {}), clobber=True)
+        definitions = merge_dict(data.get('definition_defaults', {}), self._global_definitions.copy(), clobber=True)
         definitions = merge_dict(definitions, data.get('definitions', {}), clobber=True)
         return definitions
 
