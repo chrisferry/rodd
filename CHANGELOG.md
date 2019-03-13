@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Updated
 
 - Resource override functionality reworked to remove reliance on multiple file writes.
+- Deploy replica and pod crash monitors to support multiple namespaces.
 
 ## [1.10.1]
 
