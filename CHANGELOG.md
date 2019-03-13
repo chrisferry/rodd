@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Added `system_load_average_additional_filters` option for kubernetes.system_load_average_high.
 
+### Fixed
+* Order of definition precedence fixed (most to least): monitor, global, monitor default
+
 ## [1.11.0]
 
 ### Added
