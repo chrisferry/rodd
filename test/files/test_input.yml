@@ -11,6 +11,9 @@ monitors:
     definitions:
       cluster_network_errors_critical_threshold: 10
       cluster_network_errors_warning_threshold: 5
+  - source: kubernetes.deploy_replica_alert
+    definitions:
+      namespace: ['one','two','three']
 downtimes:
   - name: Test Maintenance Window
     scope: "*"

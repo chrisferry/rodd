@@ -219,6 +219,7 @@
             * `environment`
             * `notifications`
             * `cluster`
+            * `namespace`
         * Optional Definitions:
             * `deploy_replica_alert_critical_threshold`: 0
     * [High Node IO Wait Time](/pentagon_datadog/monitors/kubernetes/high_node_io_wait_time.yml)

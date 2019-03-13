@@ -14,33 +14,15 @@
 # limitations under the License.
 
 import logging
-import traceback
 
 from pentagon_datadog.rodd import Rodd
-
-
-class Monitor(Rodd):
-    template_file_name = 'monitor.tf.jinja'
-    _item_type = 'monitors'
 
 
 class Monitors(Rodd):
 
     def add(self, destination, overwrite=False):
-        logging.debug("Adding monitor .tf files")
-        global_definitions = self._data.get('definitions', {})
-        monitors = self._data.get('monitors', {})
-        exceptions = self._data.get('exceptions', [])
-
-        try:
-            for monitor in monitors:
-                logging.debug(monitor)
-                m = Monitor(monitor)
-                m._exceptions = exceptions
-                m._global_definitions = global_definitions
-                m.add(destination, overwrite=True)
-            self._validate_tf(destination)
-        except TypeError, e:
-            logging.debug(e)
-            logging.debug(traceback.format_exc())
-            logging.error("No monitors declared or no file argument passed.")
+        self.template_file_name = 'monitor.tf.jinja'
+        self._item_type = 'monitors'
+        logging.debug("Generating monitor .tf files")
+        Rodd.add(self, destination, overwrite=True)
+        self._validate_tf(destination)

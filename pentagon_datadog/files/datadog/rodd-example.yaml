@@ -7,6 +7,9 @@ dashboards:
   - source: kubernetes.resources
 monitors:
   - source: kubernetes
+  - source: kubernetes.deploy_replica_alert
+    definitions:
+      namespace: ['infra', 'kube-system', 'rbac-manager']
 downtimes:
   - name: Weekly Maintenance Window
     scope: "*"

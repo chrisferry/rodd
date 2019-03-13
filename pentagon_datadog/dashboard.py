@@ -18,23 +18,11 @@ import logging
 from pentagon_datadog.rodd import Rodd
 
 
-class Dashboard(Rodd):
-    template_file_name = 'dashboard.tf.jinja'
-    _item_type = 'dashboards'
-
-
 class Dashboards(Rodd):
 
     def add(self, destination, overwrite=False):
-        logging.debug("Adding dashboard .tf files")
-        global_definitions = self._data.get('definitions', {})
-        try:
-            for dash in self._data.get('dashboards'):
-                logging.debug(dash)
-                d = Dashboard(dash)
-                d._global_definitions = global_definitions
-                d.add(destination, overwrite=True)
-            self._validate_tf(destination)
-        except TypeError, e:
-            logging.debug(e)
-            logging.error("No dashboards declared or no file argument passed.")
+        self.template_file_name = 'dashboard.tf.jinja'
+        self._item_type = 'dashboards'
+        logging.debug("Generating dashboard .tf files")
+        Rodd.add(self, destination, overwrite=True)
+        self._validate_tf(destination)

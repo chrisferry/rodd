@@ -16,9 +16,9 @@
 import os
 import logging
 from pentagon.component import ComponentBase
-from monitor import Monitor, Monitors
-from dashboard import Dashboard, Dashboards
-from downtime import Downtime, Downtimes
+from monitor import Monitors
+from dashboard import Dashboards
+from downtime import Downtimes
 
 
 class Datadog(ComponentBase):
@@ -29,3 +29,4 @@ class Datadog(ComponentBase):
         super(Datadog, self).add(destination, overwrite=True)
         os.remove("{}/monitor.tf".format(self._destination_directory_name))
         os.remove("{}/dashboard.tf".format(self._destination_directory_name))
+        os.remove("{}/downtime.tf".format(self._destination_directory_name))
