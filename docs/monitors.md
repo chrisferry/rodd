@@ -51,117 +51,117 @@
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [Firewall Quota](/pentagon_datadog/monitors/gcp-quotas/firewall_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [Forwarding Rules Quota](/pentagon_datadog/monitors/gcp-quotas/forwarding_rules_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [Health Checks Quota.yml](/pentagon_datadog/monitors/gcp-quotas/health_checks_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [HTTP Proxy Quota.yml](/pentagon_datadog/monitors/gcp-quotas/http_proxy_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [HTTPS Proxy Quota.yml](/pentagon_datadog/monitors/gcp-quotas/https_proxy_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [Images Quota.yml](/pentagon_datadog/monitors/gcp-quotas/images_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [Interconnects Quota](/pentagon_datadog/monitors/gcp-quotas/interconnects_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [Internal Address Quota.yml](/pentagon_datadog/monitors/gcp-quotas/internal_address_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [Network Quota](/pentagon_datadog/monitors/gcp-quotas/network_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [Routers Quota](/pentagon_datadog/monitors/gcp-quotas/routers_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [Routes Quota](/pentagon_datadog/monitors/gcp-quotas/routes_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [Security Policy Rules Quota.yml](/pentagon_datadog/monitors/gcp-quotas/security_policy_rules_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [Snapshots Quota](/pentagon_datadog/monitors/gcp-quotas/snapshots_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [SSL Certs Quota.yml](/pentagon_datadog/monitors/gcp-quotas/ssl_certs_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [Static Address Region Quota](/pentagon_datadog/monitors/gcp-quotas/static_address_region_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [Static Addresses Project Quota](/pentagon_datadog/monitors/gcp-quotas/static_addresses_project_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [Subnetworks Quota](/pentagon_datadog/monitors/gcp-quotas/subnetworks_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [Target Instances Quota](/pentagon_datadog/monitors/gcp-quotas/target_instances_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [Target Pools Quota](/pentagon_datadog/monitors/gcp-quotas/target_pools_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [URL Maps Quota](/pentagon_datadog/monitors/gcp-quotas/url_maps_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [VPN Gateway Quota](/pentagon_datadog/monitors/gcp-quotas/vpn_gateway_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
     * [VPN Tunnels Quota](/pentagon_datadog/monitors/gcp-quotas/vpn_tunnels_quota.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
-        * Optional Definitions: n/a 
+        * Optional Definitions: n/a
 
 * Kubernetes:
     * [Cluster Bytes Received](/pentagon_datadog/monitors/kubernetes/cluster_bytes_received.yml)
@@ -205,7 +205,7 @@
             * `cluster`
         * Optional Definitions:
             * `cluster_memory_critical_threshold`: 0.1
-            * `cluster_memory_critical_warning`: 0.15 
+            * `cluster_memory_critical_warning`: 0.15
     * [Cluster Network Errors](/pentagon_datadog/monitors/kubernetes/cluster_network_errors.yml)
         * Required Definitions:
             * `environment`
@@ -262,6 +262,13 @@
             * `cluster`
         * Optional Definitions:
             * `pods_pending_critical_threshold`: 1
+    * [HPA Errors](/pentagon_datadog/monitors/kubernetes/hpa_failure.yml)
+        * Required Definitions:
+            * `environment`
+            * `notifications`
+            * `cluster`
+        * Optional Definitions:
+            * `hpa_failure_critical_threshold`: 200
 
 * RDS:
     * [Burst IOPs](/pentagon_datadog/monitors/rds/burst_iops.yml)
@@ -284,4 +291,3 @@
             * `environment`
             * `notifications`
         * Optional Definitions: n/a
-
