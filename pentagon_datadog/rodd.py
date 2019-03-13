@@ -82,9 +82,10 @@ class Rodd(ComponentBase):
 
                 for local_source_path in item_local_paths:
                     resource_data = {}
-                    resource_id = '.'.join((local_source_path.split('.')[0]).split('/')[-3:])
+                    resource_id = '/'.join(local_source_path.split('/')[-3:])
                     logging.debug("Loading {}".format(local_source_path))
                     logging.debug("Source is: {} ".format(source))
+                    logging.debug("Resource id is: {} ".format(resource_id))
 
                     if os.path.isfile(local_source_path) and ('/').join(local_source_path.split('/')[-2:]) in self.exceptions:
                         continue
