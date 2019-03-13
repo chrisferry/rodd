@@ -18,7 +18,5 @@ message: |
   HPA Metric Retrieval Failure has recovered.
   {{/is_alert_recovery}}
   ${notifications}
-thresholds:
-  critical: ${hpa_failure_critical_threshold}
 definition_defaults:
   hpa_failure_critical_threshold: 200
