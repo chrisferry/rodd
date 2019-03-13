@@ -26,3 +26,4 @@ thresholds:
 timeout_h: 0
 definition_defaults:
   deploy_replica_alert_critical_threshold: 0
+  namespace: kube-system
