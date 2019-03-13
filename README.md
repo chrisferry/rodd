@@ -96,6 +96,22 @@ monitors:
       environment: staging # this will override the global value
 ```
 
+#### Namespaced Monitors
+
+Datadog does not support multiple namespaces in monitor query filters. As a workaround, Rodd monitors that include a namespace filter can generate multiple namespace specific monitors from a single monitor definition.
+
+The underlying Rodd monitor must have `vary_by_namespace: true` set. The monitor's namespace definition value can be a string or a list. Each namespace definition value will produce a separate monitor and Terraform file.
+
+```yaml
+definitions:
+  cluster: working.cluster
+  environment: production
+monitors:
+  - source: kubernetes.deploy_replica_alert
+    definitions:
+      namespace: ['infra', 'kube-system', 'rbac-manager']
+```
+
 #### Exceptions
 Sometimes you'll want to apply all the monitors or dashboards in a family of except one or two. In this case, you can can use a list of `exceptions` at the root of the YAML document. All the monitors or dashboards in that family will be templated except the ones listed in `exceptions`. The full path of the monitor is required:
 

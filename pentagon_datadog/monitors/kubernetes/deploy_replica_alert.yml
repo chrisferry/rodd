@@ -1,6 +1,6 @@
 notify_audit: false
 locked: false
-name: '[${environment}] Deployment replica alert'
+name: '[${environment}] Deployment replica alert ${namespace}'
 tags: ['${environment}', reactiveops]
 include_tags: true
 no_data_timeframe: null
@@ -10,6 +10,7 @@ require_full_window: false
 notify_no_data: false
 renotify_interval: 0
 escalation_message: ''
+vary_by_namespace: true
 query: max(last_10m):max:kubernetes_state.deployment.replicas_available{kubernetescluster:${cluster},namespace:${namespace}} by {deployment} <= ${deploy_replica_alert_critical_threshold}
 message: |
   {{#is_alert}}
@@ -25,3 +26,4 @@ thresholds:
 timeout_h: 0
 definition_defaults:
   deploy_replica_alert_critical_threshold: 0
+  namespace: kube-system

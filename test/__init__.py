@@ -54,6 +54,7 @@ class TestMonitors(unittest.TestCase):
     test_input_file = "test/files/test_input.yml"
 
     def setUp(self):
+        self.deploy_replica_alert_namespaces = ['one', 'two', 'three']
         with open(self.test_input_file) as f:
             self._data = yaml.load(f.read())
         ms = Monitors(self._data)
@@ -77,9 +78,21 @@ class TestMonitors(unittest.TestCase):
 
         self.assertEqual(gold, new)
 
+    def test_deployment_replica_alert(self):
+        for namespace in self.deploy_replica_alert_namespaces:
+            gold = hashlib.md5(open("test/files/test_deployment_replica_alert_{}.tf".format(namespace)).read()).hexdigest()
+            new = hashlib.md5(open("test_deployment_replica_alert_{}.tf".format(namespace)).read()).hexdigest()
+
+            logging.debug(gold)
+            logging.debug(new)
+
+            self.assertEqual(gold, new)
+
     def tearDown(self):
         os.remove("test_pods_are_stuck_pending.tf")
         os.remove("test_increase_in_network_errors.tf")
+        for namespace in self.deploy_replica_alert_namespaces:
+            os.remove("test_deployment_replica_alert_{}.tf".format(namespace))
 
 
 class TestDowntimes(unittest.TestCase):
