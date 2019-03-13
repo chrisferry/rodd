@@ -10,7 +10,7 @@ new_host_delay: 300
 notify_no_data: false
 renotify_interval: 0
 escalation_message: ''
-query: avg(last_30m):avg:system.load.norm.5{kubernetescluster:${cluster}} by {host} > ${system_load_average_critical_threshold}
+query: avg(last_30m):avg:system.load.norm.5{kubernetescluster:${cluster}${system_load_average_additional_filters}} by {host} > ${system_load_average_critical_threshold}
 message: |
   Load average is high on {{host.name}} {{host.ip}}.
   This is a normalized load based on the number of CPUs (i.e. ActualLoadAverage / NumberOfCPUs)
@@ -23,3 +23,4 @@ thresholds:
 timeout_h: 0
 definition_defaults:
   system_load_average_critical_threshold: 2
+  system_load_average_additional_filters: ""
