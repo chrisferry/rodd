@@ -49,6 +49,30 @@ class TestDashboards(unittest.TestCase):
         os.remove("reactiveops_kubernetes_resource_timeboard.tf")
 
 
+class TestMonitorDefinitionsGlobal(unittest.TestCase):
+    name = "test-monitors"
+    test_input_file = "test/files/test_input.yml"
+
+    def setUp(self):
+        with open(self.test_input_file) as f:
+            self._data = yaml.load(f.read())
+            self._data['definitions']['pods_pending_critical_threshold'] = 1234
+        ms = Monitors(self._data)
+        ms.add("./", overwrite=True)
+
+    def test_pods_monitor_output(self):
+        gold = hashlib.md5(open("test/files/test_pods_are_stuck_pending_def_global.tf").read()).hexdigest()
+        new = hashlib.md5(open("test_pods_are_stuck_pending.tf").read()).hexdigest()
+
+        logging.debug(gold)
+        logging.debug(new)
+
+        self.assertEqual(gold, new)
+
+    def tearDown(self):
+        os.remove("test_pods_are_stuck_pending.tf")
+
+
 class TestMonitors(unittest.TestCase):
     name = "test-monitors"
     test_input_file = "test/files/test_input.yml"
