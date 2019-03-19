@@ -170,7 +170,7 @@ class Rodd(ComponentBase):
         """ Replace ${definitions} with their value """
 
         def _replace_definition(string, definitions):
-            if type(string) == str:
+            if type(string) in [unicode, str]:
                 for var, value in definitions.iteritems():
                     logging.debug("Replacing Definition: {}:{}".format(var, value))
                     string = string.replace("${%s}" % str(var), str(value))
