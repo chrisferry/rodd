@@ -14,6 +14,26 @@ monitors:
   - source: kubernetes.deploy_replica_alert
     definitions:
       namespace: ['one','two','three']
+  - notify_audit: false
+    locked: false
+    name: 'test var replacement for inline monitors'
+    tags: [network, '${environment}', reactiveops]
+    include_tags: false
+    no_data_timeframe: null
+    silenced: {}
+    new_host_delay: 300
+    require_full_window: true
+    notify_no_data: false
+    renotify_interval: 0
+    escalation_message: ''
+    query: ${cluster} ${namespace} ${environment}
+    message: |
+      ${notifications}
+    type: metric alert
+    thresholds: {critical: 10, warning: 5}
+    timeout_h: 0
+    definitions: 
+      notifications: in-line-notifications
 downtimes:
   - name: Test Maintenance Window
     scope: "*"

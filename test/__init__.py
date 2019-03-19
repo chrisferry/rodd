@@ -112,9 +112,20 @@ class TestMonitors(unittest.TestCase):
 
             self.assertEqual(gold, new)
 
+    def test_inline_definition_replacement(self):
+        for namespace in self.deploy_replica_alert_namespaces:
+            gold = hashlib.md5(open("test/files/test_var_replacement_for_inline_monitors.tf".format(namespace)).read()).hexdigest()
+            new = hashlib.md5(open("test_var_replacement_for_inline_monitors.tf".format(namespace)).read()).hexdigest()
+
+            logging.debug(gold)
+            logging.debug(new)
+
+            self.assertEqual(gold, new)
+
     def tearDown(self):
         os.remove("test_pods_are_stuck_pending.tf")
         os.remove("test_increase_in_network_errors.tf")
+        os.remove("test_var_replacement_for_inline_monitors.tf")
         for namespace in self.deploy_replica_alert_namespaces:
             os.remove("test_deployment_replica_alert_{}.tf".format(namespace))
 
