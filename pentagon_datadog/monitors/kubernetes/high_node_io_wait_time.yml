@@ -10,8 +10,8 @@ require_full_window: true
 notify_no_data: false
 renotify_interval: 0
 escalation_message: ''
-query: avg(last_10m):avg:system.cpu.iowait{kubernetescluster:${cluster}}
-  by {host} > 50
+query: avg(last_10m):avg:system.cpu.iowait{kubernetescluster:${cluster}${high_node_io_wait_time_additional_filters}}
+  by {host} > ${high_node_io_wait_time_critical_threshold}
 message: |
   {{#is_alert}}
   The I/O wait time for {host.ip} is very high
@@ -24,5 +24,11 @@ message: |
   {{/is_alert}}
   ${notifications}
 type: metric alert
-thresholds: {critical: 50, warning: 30}
+thresholds:
+  critical: ${high_node_io_wait_time_critical_threshold}
+  warning: ${high_node_io_wait_time_warning_threshold}
 timeout_h: 0
+definition_defaults:
+  high_node_io_wait_time_additional_filters: ""
+  high_node_io_wait_time_critical_threshold: 50
+  high_node_io_wait_time_warning_threshold: 30
