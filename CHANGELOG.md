@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Updated
 - Added new options for kubernetes.high_node_io_wait_time: `high_node_io_wait_time_additional_filters`, `high_node_io_wait_time_critical_threshold`, and `high_node_io_wait_time_warning_threshold`
+- Updated `kubernetes.node_not_ready` monitor threshold.
+
+### Fixed
+- Fixed string type check for variable replacement in inline monitors
 
 ## [1.13.0]
 
