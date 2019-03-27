@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.15.0]
+
+### Updated
+- Using minimum oyaml 0.8 and PyYAML 5.0
+
+### Fixed
+- Definition names for kubernetes.pod_crashes were incorrect
+
+### Added
+- Added `pod_crashes_additional_filters` option for kubernetes.pod_crashes.
+
 ## [1.14.0]
 
 ### Updated

@@ -91,7 +91,7 @@ class Rodd(ComponentBase):
                         continue
 
                     with open(local_source_path, 'r') as item_file:
-                        item_dict = yaml.load(item_file)
+                        item_dict = yaml.load(item_file, Loader=yaml.loader.FullLoader)
                     # If the items are being pulled from a family,
                     # then use all the values in the default item
                     if len(item_local_paths) > 1:
