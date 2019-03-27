@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import absolute_import
 import os
 import logging
 import traceback
@@ -24,6 +25,7 @@ import subprocess
 from pentagon.component import ComponentBase
 
 from pentagon.helpers import render_template, merge_dict
+import six
 
 
 class Rodd(ComponentBase):
@@ -52,7 +54,7 @@ class Rodd(ComponentBase):
     def _flatten_options(self, data):
         """ If there is a options key in the _data, flatten it
         This makes transformation from datadog json easier """
-        for key, value in data.get('options', {}).iteritems():
+        for key, value in data.get('options', {}).items():
             data[key] = value
         return data
 
@@ -109,7 +111,7 @@ class Rodd(ComponentBase):
 
     def _save_processed_resources(self, resources):
         """ Loop through dict of processed resources and generates tf file for each one. """
-        for key, data in resources.iteritems():
+        for key, data in resources.items():
             definitions = self.definitions(data)
             definition_namespace = definitions.get('namespace')
 
@@ -144,7 +146,7 @@ class Rodd(ComponentBase):
             data = self._flatten_options(data)
 
             for key in data:
-                if type(data[key]) in [unicode, str]:
+                if type(data[key]) in [six.text_type, str]:
                     data[key] = data[key].replace('"', '\\"')
 
             self._remove_init_file()
@@ -170,8 +172,8 @@ class Rodd(ComponentBase):
         """ Replace ${definitions} with their value """
 
         def _replace_definition(string, definitions):
-            if type(string) in [unicode, str]:
-                for var, value in definitions.iteritems():
+            if type(string) in [six.text_type, str]:
+                for var, value in definitions.items():
                     logging.debug("Replacing Definition: {}:{}".format(var, value))
                     string = string.replace("${%s}" % str(var), str(value))
 
