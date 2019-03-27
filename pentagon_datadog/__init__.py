@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import absolute_import
 import os
 import logging
 from pentagon.component import ComponentBase
-from monitor import Monitors
-from dashboard import Dashboards
-from downtime import Downtimes
+from .monitor import Monitors
+from .dashboard import Dashboards
+from .downtime import Downtimes
 
 
 class Datadog(ComponentBase):
