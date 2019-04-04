@@ -58,7 +58,17 @@ graphs:
     status: done
   title: '[reactiveops] Resource Utilization Dashboard'
 template_variables:
-- {default: '*', prefix: kubernetescluster, name: scope}
-- {default: '*', prefix: kube_namespace, name: kube_namespace}
-- {default: '*', prefix: kube_deployment, name: kube_deployment}
-- {default: '*', prefix: node, name: node}
+- default: '*'
+  prefix: ${cluster_tag}
+  name: scope
+- default: '*'
+  prefix: kube_namespace
+  name: kube_namespace
+- default: '*'
+  prefix: kube_deployment
+  name: kube_deployment
+- default: '*'
+  prefix: node
+  name: node
+definition_defaults:
+  cluster_tag: kubernetescluster

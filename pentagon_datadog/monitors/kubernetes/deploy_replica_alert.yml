@@ -11,7 +11,7 @@ notify_no_data: false
 renotify_interval: 0
 escalation_message: ''
 vary_by_namespace: true
-query: max(last_10m):max:kubernetes_state.deployment.replicas_available{kubernetescluster:${cluster},namespace:${namespace}} by {deployment} <= ${deploy_replica_alert_critical_threshold}
+query: max(last_10m):max:kubernetes_state.deployment.replicas_available{${cluster_tag}:${cluster},namespace:${namespace}} by {deployment} <= ${deploy_replica_alert_critical_threshold}
 message: |
   {{#is_alert}}
   Available replicas is currently 0 for {{deployment.name}}
@@ -27,3 +27,4 @@ timeout_h: 0
 definition_defaults:
   deploy_replica_alert_critical_threshold: 0
   namespace: kube-system
+  cluster_tag: kubernetescluster

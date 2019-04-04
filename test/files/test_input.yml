@@ -3,6 +3,7 @@ definitions:
   cluster: cluster_name
   namespace: namespace_name
   environment: test
+  cluster_tag: cluster_tag
 dashboards:
   - source: kubernetes.resources
 monitors:

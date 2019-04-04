@@ -10,7 +10,7 @@ require_full_window: true
 notify_no_data: false
 renotify_interval: 0
 escalation_message: ''
-query: avg(last_15m):avg:kubernetes.network.rx_errors{kubernetescluster:${cluster}} + avg:kubernetes.network.tx_errors{kubernetescluster:${cluster}} > ${cluster_network_errors_critical_threshold}
+query: avg(last_15m):avg:kubernetes.network.rx_errors{${cluster_tag}:${cluster}} + avg:kubernetes.network.tx_errors{${cluster_tag}:${cluster}} > ${cluster_network_errors_critical_threshold}
 message: |
   {{#is_alert}}
   We are getting increasing network errors
@@ -24,3 +24,4 @@ timeout_h: 0
 definition_defaults:
   cluster_network_errors_critical_threshold: 10
   cluster_network_errors_warning_threshold: 5
+  cluster_tag: kubernetescluster

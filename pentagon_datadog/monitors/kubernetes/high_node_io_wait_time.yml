@@ -10,7 +10,7 @@ require_full_window: true
 notify_no_data: false
 renotify_interval: 0
 escalation_message: ''
-query: avg(last_10m):avg:system.cpu.iowait{kubernetescluster:${cluster}${high_node_io_wait_time_additional_filters}}
+query: avg(last_10m):avg:system.cpu.iowait{${cluster_tag}:${cluster}${high_node_io_wait_time_additional_filters}}
   by {host} > ${high_node_io_wait_time_critical_threshold}
 message: |
   {{#is_alert}}
@@ -32,3 +32,4 @@ definition_defaults:
   high_node_io_wait_time_additional_filters: ""
   high_node_io_wait_time_critical_threshold: 50
   high_node_io_wait_time_warning_threshold: 30
+  cluster_tag: kubernetescluster

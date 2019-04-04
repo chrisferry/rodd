@@ -14,7 +14,7 @@ ${notifications}
 
   EOF
 
-  query = "max(last_10m):max:kubernetes_state.deployment.replicas_available{kubernetescluster:cluster_name,namespace:three} by {deployment} <= 0"
+  query = "max(last_10m):max:kubernetes_state.deployment.replicas_available{cluster_tag:cluster_name,namespace:three} by {deployment} <= 0"
 
   # Optional Arguments
   new_host_delay = 300
