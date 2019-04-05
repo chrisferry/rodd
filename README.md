@@ -49,6 +49,7 @@ definitions:
   environment: "production"
   cluster: "production.cluster"
   notifications: "@pagerduty"
+  cluster_tag: "kubernetescluster"
 monitors:
   - notify_audit: false
     locked: false
@@ -82,6 +83,7 @@ They are denoted by `${<name>}` in the template and are referred to as "definiti
 definitions:
   cluster: working.cluster
   environment: production
+  cluster_tag: kubernetescluster
 monitors:
   - source: kubernetes
 ```
@@ -91,22 +93,11 @@ or at an individual monitor level to override the global value.
 definitions:
   cluster: working.cluster
   environment: production
+  cluster_tag: kubernetescluster
 monitors:
   - source: kubernetes
     definitions:
       environment: staging # this will override the global value
-```
-
-You can also define a custom `cluster_tag` for targeting specific kubernetes clusters. This currently defaults to `kubernetescluster`. 
-
-```yaml
-definitions:
-  cluster: working.cluster
-  environment: production
-  cluster_tag: my_working_kubernetes_cluster
-monitors:
-  - source: kubernetes
-  ...
 ```
 
 #### Namespaced Monitors
@@ -119,6 +110,7 @@ The underlying Rodd monitor must have `vary_by_namespace: true` set. The monitor
 definitions:
   cluster: working.cluster
   environment: production
+  cluster_tag: workingcluster
 monitors:
   - source: kubernetes.deploy_replica_alert
     definitions:
