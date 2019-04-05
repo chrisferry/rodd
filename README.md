@@ -73,8 +73,9 @@ monitors:
     timeout_h: 0
 ```
 
-#### Monitor Definitions
-Alluded to above, in each monitor there are certain fields that need to be defined; `environment`, `cluster` are two examples.
+#### Definitions
+Alluded to above, in each monitor and dashboard there are certain fields that need to be defined; `environment`, `cluster` are two examples.
+
 They are denoted by `${<name>}` in the template and are referred to as "definitions". You can define definitions at a global level.
 
 ```yaml
@@ -94,6 +95,18 @@ monitors:
   - source: kubernetes
     definitions:
       environment: staging # this will override the global value
+```
+
+You can also define a custom `cluster_tag` for targeting specific kubernetes clusters. This currently defaults to `kubernetescluster`. 
+
+```yaml
+definitions:
+  cluster: working.cluster
+  environment: production
+  cluster_tag: my_working_kubernetes_cluster
+monitors:
+  - source: kubernetes
+  ...
 ```
 
 #### Namespaced Monitors
