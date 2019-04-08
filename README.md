@@ -49,6 +49,7 @@ definitions:
   environment: "production"
   cluster: "production.cluster"
   notifications: "@pagerduty"
+  cluster_tag: "kubernetescluster"
 monitors:
   - notify_audit: false
     locked: false
@@ -73,14 +74,16 @@ monitors:
     timeout_h: 0
 ```
 
-#### Monitor Definitions
-Alluded to above, in each monitor there are certain fields that need to be defined; `environment`, `cluster` are two examples.
+#### Definitions
+Alluded to above, in each monitor and dashboard there are certain fields that need to be defined; `environment`, `cluster` are two examples.
+
 They are denoted by `${<name>}` in the template and are referred to as "definitions". You can define definitions at a global level.
 
 ```yaml
 definitions:
   cluster: working.cluster
   environment: production
+  cluster_tag: kubernetescluster
 monitors:
   - source: kubernetes
 ```
@@ -90,6 +93,7 @@ or at an individual monitor level to override the global value.
 definitions:
   cluster: working.cluster
   environment: production
+  cluster_tag: kubernetescluster
 monitors:
   - source: kubernetes
     definitions:
@@ -106,6 +110,7 @@ The underlying Rodd monitor must have `vary_by_namespace: true` set. The monitor
 definitions:
   cluster: working.cluster
   environment: production
+  cluster_tag: workingcluster
 monitors:
   - source: kubernetes.deploy_replica_alert
     definitions:

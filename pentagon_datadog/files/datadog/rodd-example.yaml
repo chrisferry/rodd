@@ -3,6 +3,7 @@ definitions:
     environment: prod
     notifications: '@slack @pagerduty'
     namespace: prod
+    cluster_tag: kubernetescluster
 dashboards:
   - source: kubernetes.resources
 monitors:

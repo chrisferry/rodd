@@ -193,6 +193,11 @@ class Rodd(ComponentBase):
                 logging.debug("Found thresholds: {}".format(data[key]))
                 for threshold_type in data[key]:
                     data[key][threshold_type] = _replace_definition(data[key][threshold_type], _definitions)
+            elif key == 'template_variables':
+                logging.debug("Found template_variables: {}".format(data[key]))
+                for index, item in enumerate(data[key]):
+                    for k, v in item.iteritems():
+                        data[key][index][k] = _replace_definition(v, _definitions)
             else:
                 data[key] = _replace_definition(data[key], _definitions)
         return data

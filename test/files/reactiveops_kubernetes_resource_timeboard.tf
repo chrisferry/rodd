@@ -92,7 +92,7 @@ resource "datadog_timeboard" "reactiveops_kubernetes_resource_timeboard" {
   template_variable {
     default = "*"
     name    = "scope"
-    prefix  = "kubernetescluster"
+    prefix  = "cluster_tag"
   }
 
   template_variable {

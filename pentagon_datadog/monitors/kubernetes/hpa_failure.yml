@@ -9,7 +9,7 @@ require_full_window: true
 notify_no_data: false
 renotify_interval: 0
 type: event alert
-query: "events('sources:kubernetes priority:all tags:kubernetescluster:${cluster} \"unable to fetch metrics from resource metrics API:\"').by('hpa').rollup('count').last('1h') > ${hpa_failure_critical_threshold}"
+query: "events('sources:kubernetes priority:all tags:${cluster_tag}:${cluster} \"unable to fetch metrics from resource metrics API:\"').by('hpa').rollup('count').last('1h') > ${hpa_failure_critical_threshold}"
 message: |
   {{#is_alert}}
   A high number of hpa failures (> {{threshold}} ) are occurring.  Can HPAs get metrics?
@@ -20,3 +20,4 @@ message: |
   ${notifications}
 definition_defaults:
   hpa_failure_critical_threshold: 200
+  cluster_tag: kubernetescluster
