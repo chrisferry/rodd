@@ -5,6 +5,7 @@
         * Required Definitions:
             * `environment`
             * `cluster`
+            * `cluster_tag`
             * `notifications`
         * Optional Definitions: n/a
 
@@ -27,12 +28,14 @@
         * Required Definitions:
             * `environment`
             * `cluster`
+            * `cluster_tag`
             * `notifications`
         * Optional Definitions: n/a
     * [Disk Throttled Write Ops](/pentagon_datadog/monitors/gcp/disk_throttled_write_ops.yml)
         * Required Definitions:
             * `environment`
             * `cluster`
+            * `cluster_tag`
             * `notifications`
         * Optional Definitions: n/a
 
@@ -169,6 +172,7 @@
             * `environment`
             * `notifications`
             * `cluster`
+            * `cluster_tag`
         * Optional Definitions:
             * `cluster_bytes_received_critical_threshold`: 20000000
             * `cluster_bytes_received_warning_threshold`: 17500000
@@ -177,6 +181,7 @@
             * `environment`
             * `notifications`
             * `cluster`
+            * `cluster_tag`
         * Optional Definitions:
             * `cluster_bytes_sent_critical_threshold`: 20000000
             * `cluster_bytes_sent_warning_threshold`: 17500000
@@ -185,6 +190,7 @@
             * `environment`
             * `notifications`
             * `cluster`
+            * `cluster_tag`
         * Optional Definitions:
             * `cluster_cpu_usage_high_critical_threshold`: 7
             * `cluster_cpu_usage_high_warning_threshold`: 5
@@ -193,6 +199,7 @@
             * `environment`
             * `notifications`
             * `cluster`
+            * `cluster_tag`
         * Optional Definitions:
             * `cluster_disk_usage_high_critical_threshold`: 90
             * `cluster_disk_usage_high_warning_threshold`: 80
@@ -203,6 +210,7 @@
             * `environment`
             * `notifications`
             * `cluster`
+            * `cluster_tag`
         * Optional Definitions:
             * `cluster_memory_critical_threshold`: 0.1
             * `cluster_memory_critical_warning`: 0.15
@@ -211,6 +219,7 @@
             * `environment`
             * `notifications`
             * `cluster`
+            * `cluster_tag`
         * Optional Definitions:
             * `cluster_network_errors_critical_threshold`: 10
             * `cluster_network_errors_warning_threshold`: 5
@@ -219,6 +228,7 @@
             * `environment`
             * `notifications`
             * `cluster`
+            * `cluster_tag`
             * `namespace`
         * Optional Definitions:
             * `deploy_replica_alert_critical_threshold`: 0
@@ -227,18 +237,21 @@
             * `environment`
             * `notifications`
             * `cluster`
+            * `cluster_tag`
         * Optional Definitions: n/a
     * [Kubelet Health](/pentagon_datadog/monitors/kubernetes/kubelet_health.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
             * `cluster`
+            * `cluster_tag`
         * Optional Definitions: n/a
     * [Kubesystem Crashes](/pentagon_datadog/monitors/kubernetes/kubesystem_crashes.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
             * `cluster`
+            * `cluster_tag`
         * Optional Definitions:
             * `kubesystem_crashes_critical_threshold`: 1
     * [Node Not Ready](/pentagon_datadog/monitors/kubernetes/node_not_ready.yml)
@@ -246,6 +259,7 @@
             * `environment`
             * `notifications`
             * `cluster`
+            * `cluster_tag`
         * Optional Definitions:
             * `node_not_ready_critical_threshold`: 8
             * `node_not_ready_warning_threshold` 3
@@ -255,12 +269,14 @@
             * `environment`
             * `notifications`
             * `cluster`
+            * `cluster_tag`
         * Optional Definitions: n/a
     * [Pods Pending](/pentagon_datadog/monitors/kubernetes/pods_pending.yml)
         * Required Definitions:
             * `environment`
             * `notifications`
             * `cluster`
+            * `cluster_tag`
         * Optional Definitions:
             * `pods_pending_critical_threshold`: 1
     * [HPA Errors](/pentagon_datadog/monitors/kubernetes/hpa_failure.yml)
@@ -268,6 +284,7 @@
             * `environment`
             * `notifications`
             * `cluster`
+            * `cluster_tag`
         * Optional Definitions:
             * `hpa_failure_critical_threshold`: 200
 
