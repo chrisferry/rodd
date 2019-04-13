@@ -1,6 +1,8 @@
 # rodd
 ReactiveOps best practices and sane defaults for dashboards and monitoring of Kubernetes infrastructure with Datadog.
 
+# _ReactiveOps Datadog is deprecated and will no longer be maintained_
+
 ## Requirements
 - python >= 2.7
 - $DATADOG_API_KEY and $DATADOG_APP_KEY
